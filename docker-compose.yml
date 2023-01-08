@@ -10,7 +10,7 @@ services:
       TZ: America/Belem
       MYSQL_ROOT_PASSWORD: root
     ports:
-      - 3307:3307
+      - 3306:3306
     volumes:
       - "/etc/localtime:/etc/localtime:ro"
       - "/etc/timezone:/etc/timezone:ro"
@@ -18,4 +18,4 @@ services:
     image: adminer
     restart: always
     ports:
-      - 8081:8081
+      - 8080:8080
