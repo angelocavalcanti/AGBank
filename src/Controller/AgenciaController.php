@@ -2,6 +2,7 @@
 
 namespace App\Controller;
 
+use App\Repository\AgenciaRepository;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
@@ -9,24 +10,19 @@ use Symfony\Component\Routing\Annotation\Route;
 class AgenciaController extends AbstractController
 {
     #[Route('/', name: 'app_lista_agencias')]
-    public function index(): Response
+    public function index(AgenciaRepository $agencias): Response
     {
         return $this->render('agencia/index.html.twig', [
-            'agencias' => $this->agencias,
+            'agencias' => $agencias->findAll(),
         ]);
     }
-
-    private array $agencias = [
-        ['nome'=>'Centro', 'telefone'=>'(87)9988-7766', 'endereco'=>'Av. principal, 100, Centro, Petrolina/PE', 'codigo'=>'001'],
-        ['nome'=>'Integração', 'telefone'=>'(87)9957-2134', 'endereco'=>'Rua Cavalcanti, 70, Maria Auxiliadora, Petrolina/PE', 'codigo'=>'123'],
-        ['nome'=>'Vila', 'endereco'=>'Rua Gomes, 11, Vila, Juazeiro/BA', 'codigo'=>'321']
-    ];
     
     #[Route('/agencia/{id}', name: 'app_agencia')]
-    public function agencia($id): Response
+    public function agencia(AgenciaRepository $agencias, $id): Response
     {
-        if (key_exists($id,$this->agencias)) {
-            $agencia = $this->agencias[$id];
+        $agencias = $agencias->findAll();
+        if (key_exists($id,$agencias)) {
+            $agencia = $agencias[$id];
         }
         else {
             $agencia = [ 
