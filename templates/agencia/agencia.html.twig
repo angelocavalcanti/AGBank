@@ -13,7 +13,7 @@
     <div>
         <li><strong>Nome: </strong>{{ agencia.nome }} </li>
         <li><strong>Código: </strong> {{ agencia.codigo }} </li>
-        {# <li><strong>Telefone: </strong> {{ agencia.gerente|default('--') }} </li> #}
+        <li><strong>Gerente: </strong> {{ agencia.gerente|default('--') }} </li>
         <li><strong>Telefone: </strong> {{ agencia.telefone|default('--') }} </li> 
         <li><strong>Endereço: </strong> {{ agencia.endereco|default('--') }} </li>
     </div>
