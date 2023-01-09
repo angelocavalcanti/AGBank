@@ -1,0 +1,21 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}AGBank{% endblock %}
+
+{% block body %}
+<style>
+    .example-wrapper { margin: 1em auto; max-width: 800px; width: 95%; font: 18px/1.5 sans-serif; }
+    .example-wrapper code { background: #F5F5F5; padding: 2px 6px; }
+</style>
+
+<div class="example-wrapper">
+    <h1>Informações da Agência:</h1>{# ✅</h1> #}
+    <div>
+        <li><strong>Nome: </strong>{{ agencia.nome }} </li>
+        <li><strong>Código: </strong> {{ agencia.codigo }} </li>
+        {# <li><strong>Telefone: </strong> {{ agencia.gerente|default('--') }} </li> #}
+        <li><strong>Telefone: </strong> {{ agencia.telefone|default('--') }} </li> 
+        <li><strong>Endereço: </strong> {{ agencia.endereco|default('--') }} </li>
+    </div>
+</div>
+{% endblock %}
