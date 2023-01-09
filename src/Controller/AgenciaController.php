@@ -17,9 +17,9 @@ class AgenciaController extends AbstractController
     }
 
     private array $agencias = [
-        ['nome'=>'Centro', 'telefone'=>'879988-7766', 'endereco'=>'Av. principal, 100, Centro, Brasília', 'codigo'=>'001'],
-        ['nome'=>'Rio', 'telefone'=>'879957-2134', 'endereco'=>'Rua Cavalcanti, 70, Rio, Brasília', 'codigo'=>'123'],
-        ['nome'=>'Vila', 'telefone'=>'877734-4751', 'endereco'=>'Rua Gomes, 11, Vila, Brasília', 'codigo'=>'321']
+        ['nome'=>'Centro', 'telefone'=>'879988-7766', 'endereco'=>'Av. principal, 100, Centro, Petrolina/PE', 'codigo'=>'001'],
+        ['nome'=>'Integração', 'telefone'=>'879957-2134', 'endereco'=>'Rua Cavalcanti, 70, Maria Auxiliadora, Petrolina/PE', 'codigo'=>'123'],
+        ['nome'=>'Vila', 'telefone'=>'877734-4751', 'endereco'=>'Rua Gomes, 11, Vila, Juazeiro/BA', 'codigo'=>'321']
     ];
     
     #[Route('/agencia/{id}', name: 'app_agencia')]
