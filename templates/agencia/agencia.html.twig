@@ -1,6 +1,6 @@
 {% extends 'base.html.twig' %}
 
-{% block title %}AGBank{% endblock %}
+{% block title %}AGBank - Agência {{ agencia.nome|default('') }}{% endblock %}
 
 {% block body %}
 <style>
@@ -9,13 +9,25 @@
 </style>
 
 <div class="example-wrapper">
-    <h1>Informações da Agência:</h1>{# ✅</h1> #}
-    <div>
-        <li><strong>Nome: </strong>{{ agencia.nome }} </li>
-        <li><strong>Código: </strong> {{ agencia.codigo }} </li>
-        <li><strong>Gerente: </strong> {{ agencia.gerente|default('--') }} </li>
-        <li><strong>Telefone: </strong> {{ agencia.telefone|default('--') }} </li> 
-        <li><strong>Endereço: </strong> {{ agencia.endereco|default('--') }} </li>
-    </div>
+    {% if agencia %}
+        <h1>Informações da Agência:</h1>{# ✅</h1> #}
+        <div>
+            <li><strong>Nome: </strong>{{ agencia.nome|default('--') }} </li>
+            <li><strong>Código: </strong> {{ agencia.codigo|default('--') }} </li>
+            <li><strong>Gerente: </strong> {{ agencia.gerente.nome|default('--') }} </li>
+            <li><strong>Telefone: </strong> {{ agencia.telefone|default('--') }} </li> 
+            <li><strong>Endereço: </strong> {{ agencia.endereco|default('--') }} </li>
+        </div>
+        <br>
+        <div>
+            {# CRIAR CLASSE "CONTA" E CHAMAR AQUI PARA ABRIR NOVAS CONTAS #}
+            <button>Desejo abrir uma conta nesta agência</button>
+            {# <button onClick="window.location.href = '{{ path('app_criar_conta') }}'"><strong>Desejo abrir uma conta nesta agência</strong></button> #}
+        </div>
+    {% else %}
+        <br>
+        <h1>Esta Agência não existe na base de dados!</h1>
+        <h2>Retorne para a página inicial <a href= "{{ path('app_listar_agencias') }}">clicando aqui</a></h2>  
+    {% endif %}
 </div>
 {% endblock %}

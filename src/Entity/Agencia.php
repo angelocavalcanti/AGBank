@@ -25,6 +25,15 @@ class Agencia
     #[ORM\Column(length: 20, nullable: true)]
     private ?string $telefone = null;
 
+    #[ORM\OneToOne(inversedBy: 'agencia', cascade: ['persist', 'remove'])]
+    #[ORM\JoinColumn(nullable: false)]
+    private ?Gerente $gerente = null;
+
+    public function __toString()
+    {
+        return $this->nome;
+    }
+
     public function getId(): ?int
     {
         return $this->id;
@@ -74,6 +83,18 @@ class Agencia
     public function setTelefone(?string $telefone): self
     {
         $this->telefone = $telefone;
+
+        return $this;
+    }
+
+    public function getGerente(): ?Gerente
+    {
+        return $this->gerente;
+    }
+
+    public function setGerente(Gerente $gerente): self
+    {
+        $this->gerente = $gerente;
 
         return $this;
     }

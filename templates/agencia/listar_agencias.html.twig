@@ -13,7 +13,11 @@
     <h2>Veja nossas agências:</h2>
     <div>
         {% for key, agencia in agencias %}
-            <li><a href="{{ path('app_agencia', {id:key}) }}">Agência {{agencia.nome}}</a></li>
+            {# <button onClick="window.location.href = '{{ path('app_agencia', {id:key}) }}'" style="padding: 2px;"> #}
+            <a href='{{ path('app_agencia', {id:key}) }}'>
+                <h3>Agência {{agencia.nome}}</h3>
+            {# </button><hr> #}
+            </a><h4>{{ agencia.endereco }}</h4><hr>
         {% endfor %}
     </div>
 </div>

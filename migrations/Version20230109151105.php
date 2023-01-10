@@ -14,7 +14,7 @@ final class Version20230109151105 extends AbstractMigration
 {
     public function getDescription(): string
     {
-        return '';
+        return 'Criação da tabela Agência';
     }
 
     public function up(Schema $schema): void
