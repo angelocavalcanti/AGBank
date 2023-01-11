@@ -18,10 +18,9 @@
             <li><strong>Telefone: </strong> {{ agencia.telefone|default('--') }} </li> 
             <li><strong>Endereço: </strong> {{ agencia.endereco|default('--') }} </li>
         </div>
-        <br>
         <div>
             {# CRIAR CLASSE "CONTA" E CHAMAR AQUI PARA ABRIR NOVAS CONTAS #}
-            <button>Desejo abrir uma conta nesta agência</button>
+            <button class="block w-1/2 shadow-sm border-transparent bg-indigo-600 hover:bg-indigo-700 dark:bg-indigo-500 dark:hover:bg-indigo-400 text-white rounded-md border p-2 mt-4 mb-2">Desejo abrir uma conta nesta agência</button>
             {# <button onClick="window.location.href = '{{ path('app_criar_conta') }}'"><strong>Desejo abrir uma conta nesta agência</strong></button> #}
         </div>
     {% else %}

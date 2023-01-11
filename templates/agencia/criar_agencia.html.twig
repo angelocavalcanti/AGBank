@@ -10,12 +10,39 @@
 
 <div class="example-wrapper">
     <h1>Abertura de nova Agência:</h1>
+    
+    {{ form_start(form) }}
+    <div>{{ form_errors(form) }}</div>
     <div>
-        <li><strong>Nome: </strong></li>
-        <li><strong>Código: </strong></li>
-        <li><strong>Gerente: </strong></li>
-        <li><strong>Telefone: </strong></li> 
-        <li><strong>Endereço: </strong></li>
+        {{ form_label(form.nome, 'Nome:', {'label_attr': {'class': 'block text-sm text-gray-700 dark:text-gray-300 font-medium'}}) }}
+        {{ form_widget(form.nome, {'attr': {'class': 'block w-full shadow-sm border-gray-300 dark:border-transparent dark:text-gray-800 rounded-md border p-2 mt-1 mb-2', 'placeholder':'Centro'}})}}
+        {{ form_errors(form.nome) }}
     </div>
+    <div>
+        {{ form_label(form.codigo, 'Código: ', {'label_attr': {'class': 'block text-sm text-gray-700 dark:text-gray-300 font-medium'}}) }}
+        {{ form_widget(form.codigo, {'attr': {'class': 'block w-full shadow-sm border-gray-300 dark:border-transparent dark:text-gray-800 rounded-md border p-2 mt-1 mb-2', 'placeholder':'123-4'}}) }}
+        {{ form_errors(form.codigo) }}
+    </div>
+    <div>
+        {{ form_label(form.telefone, 'Telefone: ', {'label_attr': {'class': 'block text-sm text-gray-700 dark:text-gray-300 font-medium'}}) }}
+        {{ form_widget(form.telefone, {'attr': {'class': 'block w-full shadow-sm border-gray-300 dark:border-transparent dark:text-gray-800 rounded-md border p-2 mt-1 mb-2', 'placeholder':'DDD + Número'}}) }}
+        {{ form_errors(form.telefone) }}
+    </div>
+    <div>
+        {{ form_label(form.endereco, 'Endereço: ', {'label_attr': {'class': 'block text-sm text-gray-700 dark:text-gray-300 font-medium'}}) }}
+        {{ form_widget(form.endereco, {'attr': {'class': 'block w-full shadow-sm border-gray-300 dark:border-transparent dark:text-gray-800 rounded-md border p-2 mt-1 mb-2', 'placeholder':'Rua, n°, bairro, cidade/UF'}}) }}
+        {{ form_errors(form.endereco) }}
+    </div>
+    <div>
+        {{ form_label(form.gerente, 'Selecione o Gerente: ', {'label_attr': {'class': 'block text-sm text-gray-700 dark:text-gray-300 font-medium'}}) }}
+        {{ form_widget(form.gerente, {'attr': {'class': 'block w-full shadow-sm border-gray-300 dark:border-transparent dark:text-gray-800 rounded-md border p-2 mt-1 mb-2'}}) }}
+        {{ form_errors(form.gerente) }}
+    </div>
+    <div>
+        <button type="submit" class="block w-full shadow-sm border-transparent bg-indigo-600 hover:bg-indigo-700 dark:bg-indigo-500 dark:hover:bg-indigo-400 text-white rounded-md border p-2 mt-4 mb-2"><strong>Criar Agência</strong></button>
+    </div>
+    {{ form_end(form) }}
+    <br>
+    {# <button onClick="window.location.href = '{{ path('app_listar_agencias') }}'"><strong>Lista de Agências</strong></button> #}
 </div>
 {% endblock %}
