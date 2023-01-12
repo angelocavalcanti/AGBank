@@ -5,7 +5,9 @@ namespace App\Controller;
 use App\Entity\Agencia;
 use App\Entity\Gerente;
 use App\Form\AgenciaType;
+use App\Form\GerenteType;
 use App\Repository\AgenciaRepository;
+use App\Repository\GerenteRepository;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
@@ -37,22 +39,29 @@ class AgenciaController extends AbstractController
     }
 
     #[Route('/agencia/criar', name: 'app_criar_agencia', priority:1)]
-    public function criar_agencia(AgenciaRepository $agencias, Request $request): Response
+    public function criar_agencia(AgenciaRepository $agencias, GerenteRepository $gerentes, Request $request): Response
     {
-        $form = $this->createForm(AgenciaType::class, new Agencia());
+        $formAgencia = $this->createForm(AgenciaType::class, new Agencia());
+        $formGerente = $this->createForm(GerenteType::class, new Gerente());
+
         
         //o formulário foi submetido? 
-        $form->handleRequest($request);
+        $formAgencia->handleRequest($request);
+        $formGerente->handleRequest($request);
         //se sim, tratar a submissão
-        if ($form->isSubmitted() && $form->isValid()) {
-            $agencia = $form->getData();
+        if ($formAgencia->isSubmitted() && $formAgencia->isValid() && $formGerente->isSubmitted() && $formGerente->isValid()) {
+            $gerente = $formGerente->getData();
+            $gerentes->save($gerente, true);
+            $agencia = $formAgencia->getData();
+            $agencia->setGerente($gerente); // Associa o gerente criado à Agência a ser criada na linha abaixo
             $agencias->save($agencia, true);
-            $this->addFlash('success', 'A Agência foi criada!');
+            $this->addFlash('success', 'Sucesso! Agência criada com Gerente associado.');
             return $this->redirectToRoute('app_listar_agencias');
         }
         //caso contrário, renderizar o formulário para adicionar Agências
         return $this->renderForm('agencia/criar_agencia.html.twig', [
-            'form' => $form 
+            'formAgencia' => $formAgencia,
+            'formGerente' => $formGerente 
         ]);
     }
 }
