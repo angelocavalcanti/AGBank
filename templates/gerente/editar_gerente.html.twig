@@ -5,14 +5,14 @@
 {% block body %}
 <div>
     <div class="w-full flex items-center align-middle">
-        <div class="text-teal-700 text-2xl block w-full align-middle">Editar Gerente</div>
+        <div class="text-teal-700 text-3xl block w-full align-middle">Editar Gerente</div>
         <div class="text-right block w-full"><button class="order-transparent bg-indigo-600 hover:bg-indigo-700 dark:bg-indigo-500 dark:hover:bg-indigo-400 text-white rounded-md border py-1 px-3" onClick="window.location.href = '{{ path('app_listar_gerentes') }}'">Lista de Gerentes</button></div>
     </div>
     <hr class="p-2 mt-2">    
     {{ form_start(formGerente) }}
     <div>{{ form_errors(formGerente) }}</div>
     
-    <table class="w-full justify-between items-center">
+    <table class="w-1/3 justify-between items-center">
         <tr>
             <td colspan="2">
                 {{ form_label(formGerente.nome, 'Nome do Gerente: ', {'label_attr': {'class': 'block text-sm text-gray-700 dark:text-gray-300 font-medium'}}) }}
@@ -34,7 +34,7 @@
         </tr>
     </table>    
     <div>
-        <button type="submit" class="block w-full shadow-sm border-transparent bg-indigo-600 hover:bg-indigo-700 dark:bg-indigo-500 dark:hover:bg-indigo-400 text-white rounded-md border p-2 mt-4 mb-2 font-bold">Atualizar dados</button>
+        <button type="submit" class="block w-1/3 shadow-sm border-transparent bg-indigo-600 hover:bg-indigo-700 dark:bg-indigo-500 dark:hover:bg-indigo-400 text-white rounded-md border p-2 mt-4 mb-2 font-bold">Atualizar dados</button>
     </div>
     {{ form_end(formGerente) }}
 </div>

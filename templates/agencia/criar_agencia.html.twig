@@ -5,73 +5,75 @@
 {% block body %}
 <div>
     <div class="w-full flex items-center align-middle">
-        <div class="text-teal-700 text-2xl block w-full align-middle">Criação de nova Agência</div>
+        <div class="text-teal-700 text-2xl block w-full align-middle">Criar Agência</div>
         <div class="text-right block w-full"><button class="order-transparent bg-indigo-600 hover:bg-indigo-700 dark:bg-indigo-500 dark:hover:bg-indigo-400 text-white rounded-md border py-1 px-3" onClick="window.location.href = '{{ path('app_listar_agencias') }}'">Lista de Agências</button></div>
     </div>
     <hr class="p-2 mt-2">
     {{ form_start(formAgencia) }}
-     {{ form_start(formGerente) }}
+    {{ form_start(formGerente) }}
     <div>{{ form_errors(formAgencia) }}</div>
     <div>{{ form_errors(formGerente) }}</div>
     
-    <table class="w-full justify-between items-center">
-    <tr>
-        <th colspan="2">Informações da Agência</th>
-    </tr>
-    <tr>
-        <td colspan="2">
-            {{ form_label(formAgencia.nome, 'Nome:', {'label_attr': {'class': 'block text-sm text-gray-700 dark:text-gray-300 font-medium'}}) }}
-            {{ form_widget(formAgencia.nome, {'attr': {'class': 'block w-full shadow-sm border-gray-300 dark:border-transparent dark:text-gray-800 rounded-md border p-2 mt-1 mb-2', 'placeholder':'Centro'}})}}
-            {{ form_errors(formAgencia.nome) }}
-        </td>
-    </tr>
-    <tr>
-        <td>
-            {{ form_label(formAgencia.codigo, 'Código: ', {'label_attr': {'class': 'block text-sm text-gray-700 dark:text-gray-300 font-medium'}}) }}
-            {{ form_widget(formAgencia.codigo, {'attr': {'class': 'block w-full shadow-sm border-gray-300 dark:border-transparent dark:text-gray-800 rounded-md border p-2 mt-1 mb-2', 'placeholder':'123-4'}}) }}
-            {{ form_errors(formAgencia.codigo) }}
-        </td>
-        <td>
-            {{ form_label(formAgencia.telefone, 'Telefone: ', {'label_attr': {'class': 'block text-sm text-gray-700 dark:text-gray-300 font-medium'}}) }}
-            {{ form_widget(formAgencia.telefone, {'attr': {'class': 'block w-full shadow-sm border-gray-300 dark:border-transparent dark:text-gray-800 rounded-md border p-2 mt-1 mb-2', 'placeholder':'DDD + Número'}}) }}
-            {{ form_errors(formAgencia.telefone) }}
-        </td>
-    </tr>
-    <tr>
-        <td colspan="2">
-            {{ form_label(formAgencia.endereco, 'Endereço: ', {'label_attr': {'class': 'block text-sm text-gray-700 dark:text-gray-300 font-medium'}}) }}
-            {{ form_widget(formAgencia.endereco, {'attr': {'class': 'block w-full shadow-sm border-gray-300 dark:border-transparent dark:text-gray-800 rounded-md border p-2 mt-1 mb-2', 'placeholder':'Rua, n°, bairro, cidade/UF'}}) }}
-            {{ form_errors(formAgencia.endereco) }}
-        </td>
-    </tr>
-    </table>
-    <br><div><hr></div><br>
-    <table class="w-full justify-between items-center">
+    <div class="w-full ml-40">
+        <table class="w-2/3 justify-between items-center">
         <tr>
-            <th colspan="2">Informações do Gerente</th>
+            <th colspan="2">Informações da Agência</th>
         </tr>
         <tr>
             <td colspan="2">
-                {{ form_label(formGerente.nome, 'Nome do Gerente: ', {'label_attr': {'class': 'block text-sm text-gray-700 dark:text-gray-300 font-medium'}}) }}
-                {{ form_widget(formGerente.nome, {'attr': {'class': 'block w-full shadow-sm border-gray-300 dark:border-transparent dark:text-gray-800 rounded-md border p-2 mt-1 mb-2'}}) }}
-                {{ form_errors(formGerente.nome) }}
+                {{ form_label(formAgencia.nome, 'Nome:', {'label_attr': {'class': 'block text-sm text-gray-700 dark:text-gray-300 font-medium'}}) }}
+                {{ form_widget(formAgencia.nome, {'attr': {'class': 'block w-full shadow-sm border-gray-300 dark:border-transparent dark:text-gray-800 rounded-md border p-2 mt-1 mb-2', 'placeholder':'Centro'}})}}
+                {{ form_errors(formAgencia.nome) }}
             </td>
         </tr>
         <tr>
             <td>
-                {{ form_label(formGerente.cpf, 'CPF do Gerente: ', {'label_attr': {'class': 'block text-sm text-gray-700 dark:text-gray-300 font-medium'}}) }}
-                {{ form_widget(formGerente.cpf, {'attr': {'class': 'block w-full shadow-sm border-gray-300 dark:border-transparent dark:text-gray-800 rounded-md border p-2 mt-1 mb-2'}}) }}
-                {{ form_errors(formGerente.cpf) }}
+                {{ form_label(formAgencia.codigo, 'Código: ', {'label_attr': {'class': 'block text-sm text-gray-700 dark:text-gray-300 font-medium'}}) }}
+                {{ form_widget(formAgencia.codigo, {'attr': {'class': 'block w-full shadow-sm border-gray-300 dark:border-transparent dark:text-gray-800 rounded-md border p-2 mt-1 mb-2', 'placeholder':'123-4'}}) }}
+                {{ form_errors(formAgencia.codigo) }}
             </td>
             <td>
-                {{ form_label(formGerente.matricula, 'Matrícula do Gerente: ', {'label_attr': {'class': 'block text-sm text-gray-700 dark:text-gray-300 font-medium'}}) }}
-                {{ form_widget(formGerente.matricula, {'attr': {'class': 'block w-full shadow-sm border-gray-300 dark:border-transparent dark:text-gray-800 rounded-md border p-2 mt-1 mb-2'}}) }}
-                {{ form_errors(formGerente.matricula) }}
+                {{ form_label(formAgencia.telefone, 'Telefone: ', {'label_attr': {'class': 'block text-sm text-gray-700 dark:text-gray-300 font-medium'}}) }}
+                {{ form_widget(formAgencia.telefone, {'attr': {'class': 'block w-full shadow-sm border-gray-300 dark:border-transparent dark:text-gray-800 rounded-md border p-2 mt-1 mb-2', 'placeholder':'DDD + Número'}}) }}
+                {{ form_errors(formAgencia.telefone) }}
             </td>
         </tr>
-    </table>    
+        <tr>
+            <td colspan="2">
+                {{ form_label(formAgencia.endereco, 'Endereço: ', {'label_attr': {'class': 'block text-sm text-gray-700 dark:text-gray-300 font-medium'}}) }}
+                {{ form_widget(formAgencia.endereco, {'attr': {'class': 'block w-full shadow-sm border-gray-300 dark:border-transparent dark:text-gray-800 rounded-md border p-2 mt-1 mb-2', 'placeholder':'Rua, n°, bairro, cidade/UF'}}) }}
+                {{ form_errors(formAgencia.endereco) }}
+            </td>
+        </tr>
+        </table>
+        <br><div><hr></div><br>
+        <table class="w-2/3 justify-between items-center">
+            <tr>
+                <th colspan="2">Informações do Gerente</th>
+            </tr>
+            <tr>
+                <td colspan="2">
+                    {{ form_label(formGerente.nome, 'Nome do Gerente: ', {'label_attr': {'class': 'block text-sm text-gray-700 dark:text-gray-300 font-medium'}}) }}
+                    {{ form_widget(formGerente.nome, {'attr': {'class': 'block w-full shadow-sm border-gray-300 dark:border-transparent dark:text-gray-800 rounded-md border p-2 mt-1 mb-2'}}) }}
+                    {{ form_errors(formGerente.nome) }}
+                </td>
+            </tr>
+            <tr>
+                <td>
+                    {{ form_label(formGerente.cpf, 'CPF do Gerente: ', {'label_attr': {'class': 'block text-sm text-gray-700 dark:text-gray-300 font-medium'}}) }}
+                    {{ form_widget(formGerente.cpf, {'attr': {'class': 'block w-full shadow-sm border-gray-300 dark:border-transparent dark:text-gray-800 rounded-md border p-2 mt-1 mb-2'}}) }}
+                    {{ form_errors(formGerente.cpf) }}
+                </td>
+                <td>
+                    {{ form_label(formGerente.matricula, 'Matrícula do Gerente: ', {'label_attr': {'class': 'block text-sm text-gray-700 dark:text-gray-300 font-medium'}}) }}
+                    {{ form_widget(formGerente.matricula, {'attr': {'class': 'block w-full shadow-sm border-gray-300 dark:border-transparent dark:text-gray-800 rounded-md border p-2 mt-1 mb-2'}}) }}
+                    {{ form_errors(formGerente.matricula) }}
+                </td>
+            </tr>
+        </table> 
+    </div>   
     <div>
-        <button type="submit" class="block w-full shadow-sm border-transparent bg-indigo-600 hover:bg-indigo-700 dark:bg-indigo-500 dark:hover:bg-indigo-400 text-white rounded-md border p-2 mt-4 mb-2">Cadastrar Agência e Gerente</button>
+        <button type="submit" class="block w-2/3 shadow-sm border-transparent bg-indigo-600 hover:bg-indigo-700 dark:bg-indigo-500 dark:hover:bg-indigo-400 text-white rounded-md border p-2 mt-4 mb-2 ml-40">Cadastrar Agência e Gerente</button>
     </div>
     {{ form_end(formAgencia) }}
     {{ form_end(formGerente) }}

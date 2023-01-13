@@ -27,7 +27,10 @@ class ContaController extends AbstractController
         $formConta->handleRequest($request);
         if ($formConta->isSubmitted() && $formConta->isValid()) {
             $conta = $formConta->getData();
-            $conta->setNumero(5);
+            $conta->setNumero(rand(1000, 10000));
+            while ($contas->findOneBy(['numero'=> $conta->getNumero()])){
+                $conta->setNumero(rand(1000, 10000));
+            }
             $conta->setSaldo(0);
             $conta->setDataAbertura(new \DateTime()); // Associa a data de abertura da conta à de criação do objeto
             $contas->save($conta, true);
@@ -37,6 +40,15 @@ class ContaController extends AbstractController
         // RETORNAR PARA PÁGINA DE LOGIN CASO NÃO ESTEJA LOGADO PARA ABRIR CONTA
         return $this->renderForm('conta/criar_conta.html.twig', [
             'formConta' => $formConta, 
+        ]);
+    }
+
+    #[Route('/conta/transfencia', name: 'app_conta_transferencia')]
+    public function transferir(): Response
+    {
+        
+        return $this->render('conta/listar_agencias.html.twig', [
+            'controller_name' => 'ContaController',
         ]);
     }
 }
