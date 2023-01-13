@@ -39,13 +39,5 @@ class GerenteController extends AbstractController
             'gerente/editar_gerente.html.twig',
             [ 'formGerente' => $formGerente, 'gerente' => $gerente, 'id' => $id ]
         );
-
-
-
-
-
-        return $this->render('gerente/editar_gerente.html.twig', [
-            'id' => $id,
-        ]);
     }
 }
