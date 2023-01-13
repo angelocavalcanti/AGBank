@@ -44,7 +44,6 @@ class AgenciaController extends AbstractController
         $formAgencia = $this->createForm(AgenciaType::class, new Agencia());
         $formGerente = $this->createForm(GerenteType::class, new Gerente());
 
-        
         //o formulário foi submetido? 
         $formAgencia->handleRequest($request);
         $formGerente->handleRequest($request);

@@ -23,6 +23,10 @@ class Conta
     #[ORM\Column(type: Types::DATETIME_MUTABLE)]
     private ?\DateTimeInterface $dataAbertura = null;
 
+    #[ORM\ManyToOne(inversedBy: 'contas')]
+    #[ORM\JoinColumn(nullable: false)]
+    private ?Agencia $agencia = null;
+
     public function getId(): ?int
     {
         return $this->id;
@@ -60,6 +64,18 @@ class Conta
     public function setDataAbertura(\DateTimeInterface $dataAbertura): self
     {
         $this->dataAbertura = $dataAbertura;
+
+        return $this;
+    }
+
+    public function getAgencia(): ?Agencia
+    {
+        return $this->agencia;
+    }
+
+    public function setAgencia(?Agencia $agencia): self
+    {
+        $this->agencia = $agencia;
 
         return $this;
     }
