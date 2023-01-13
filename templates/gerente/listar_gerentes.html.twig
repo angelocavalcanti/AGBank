@@ -1,0 +1,28 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}AGBank - Lista de Gerentes{% endblock %}
+
+{% block body %}
+<div>
+
+    <div class="text-teal-700 text-3xl mb-5">Lista de Gerentes<hr></div>
+
+    {% for gerente in gerentes %}
+        <div class="mt-5 mb-2">
+        <div><strong>Gerente:</strong> {{gerente.nome}}</div>
+        <div><strong>CPF:</strong> {{ gerente.cpf }}</div>
+        <div><strong>Matrícula:</strong> {{ gerente.matricula }}</div>
+        <div class="pt-3 pb-1"><strong>
+            Informações da agência:
+        </strong></div>
+        <div><strong>Nome:</strong> {{ gerente.agencia.nome }}</div>
+        <div><strong>Código:</strong> {{ gerente.agencia.codigo }}</div>
+        <div><strong>Endereço:</strong> {{ gerente.agencia.endereco }}</div>
+        <div><strong>Telefone:</strong> {{ gerente.agencia.telefone }}</div>
+        <button class="block w-1/6 shadow-sm border-transparent bg-indigo-600 hover:bg-indigo-700 dark:bg-indigo-500 dark:hover:bg-indigo-400 text-white rounded-md border p-2 mt-4 mb-2" onClick="window.location.href = '{{ path('app_editar_gerente', {id:gerente.id}) }}'">Editar Gerente</button>
+        </div>
+        <hr>
+    {% endfor %}
+</div>    
+</div>
+{% endblock %}

@@ -16,7 +16,6 @@ class AgenciaType extends AbstractType
             ->add('codigo')
             ->add('endereco')
             ->add('telefone')
-            // ->add('gerente')
         ;
     }
 

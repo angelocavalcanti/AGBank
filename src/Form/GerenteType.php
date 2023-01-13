@@ -15,7 +15,6 @@ class GerenteType extends AbstractType
             ->add('nome')
             ->add('cpf')
             ->add('matricula')
-            // ->add('agencia')
         ;
     }
 
