@@ -6,6 +6,7 @@ use App\Repository\AgenciaRepository;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
+use Symfony\Component\Validator\Constraints as Assert;
 
 #[ORM\Entity(repositoryClass: AgenciaRepository::class)]
 class Agencia
@@ -16,12 +17,17 @@ class Agencia
     private ?int $id = null;
 
     #[ORM\Column(length: 255)]
+    #[Assert\NotBlank(message: 'Este campo não pode estar em branco.')]
+    #[Assert\Length(min:3, max:25, minMessage: 'Nome curto, precisa digitar no mínimo 3 caracteres.')]
     private ?string $nome = null;
 
     #[ORM\Column(length: 15)]
+    #[Assert\Length(min:3, max:255, minMessage: 'Código curto, precisa digitar no mínimo 3 caracteres.')]
+    #[Assert\NotBlank(message: 'Este campo não pode estar em branco.')]
     private ?string $codigo = null;
 
     #[ORM\Column(length: 255)]
+    #[Assert\Length(min:10, max:255, minMessage: 'Insira o endereço completo, com no mínimo 10 caracteres.')]
     private ?string $endereco = null;
 
     #[ORM\Column(length: 20, nullable: true)]

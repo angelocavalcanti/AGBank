@@ -2,8 +2,10 @@
 
 namespace App\Controller;
 
+use App\Entity\Agencia;
 use App\Entity\Conta;
 use App\Form\ContaType;
+use App\Repository\AgenciaRepository;
 use App\Repository\ContaRepository;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
@@ -12,14 +14,6 @@ use Symfony\Component\Routing\Annotation\Route;
 
 class ContaController extends AbstractController
 {
-    // #[Route('/conta', name: 'app_conta')]
-    // public function index(): Response
-    // {
-    //     return $this->render('conta/index.html.twig', [
-    //         'controller_name' => 'ContaController',
-    //     ]);
-    // }
-
     #[Route('/conta/criar', name: 'app_criar_conta')]
     public function criar_conta(ContaRepository $contas, Request $request): Response
     {
@@ -34,7 +28,10 @@ class ContaController extends AbstractController
             $conta->setSaldo(0);
             $conta->setDataAbertura(new \DateTime()); // Associa a data de abertura da conta à de criação do objeto
             $contas->save($conta, true);
+            $agencia = $conta->getAgencia();
+            $tipo = $conta->getTipo();
             $this->addFlash('success', 'Sucesso! Conta criada.');
+            $this->addFlash('success', 'Conta '.$tipo->getTipo().': '.$conta->getNumero().'. Agência: '.$agencia->getCodigo().' ('.$agencia->getNome().')');
             return $this->redirectToRoute('app_listar_agencias');
         }
         // RETORNAR PARA PÁGINA DE LOGIN CASO NÃO ESTEJA LOGADO PARA ABRIR CONTA
@@ -43,10 +40,13 @@ class ContaController extends AbstractController
         ]);
     }
 
-    #[Route('/conta/transfencia', name: 'app_conta_transferencia')]
-    public function transferir(): Response
+    #[Route('/conta/depositar', name: 'app_conta_deposito')]
+    public function depositar($numeroConta, ContaRepository $contas): Response
     {
-        
+        // encontrar conta e fazer o depósito aqui:
+        // falta implementar
+        $contas->findOneBy($numeroConta);
+
         return $this->render('conta/listar_agencias.html.twig', [
             'controller_name' => 'ContaController',
         ]);

@@ -1,0 +1,47 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}AGBank - Editar Agência{% endblock %}
+
+{% block body %}
+<div>
+    <div class="w-full flex items-center align-middle">
+        <div class="text-teal-700 text-3xl block w-full align-middle">Editar Agência</div>
+    </div>
+    <hr class="p-2 mt-2">    
+    {{ form_start(formAgencia) }}
+    <div>{{ form_errors(formAgencia) }}</div>
+    
+    <table class="w-2/5 justify-between items-center">
+        <tr>
+            <td colspan="2">
+                {{ form_label(formAgencia.nome, 'Nome:', {'label_attr': {'class': 'block text-sm text-gray-700 dark:text-gray-300 font-medium'}}) }}
+                {{ form_widget(formAgencia.nome, {'attr': {'class': 'block w-full shadow-sm border-gray-300 dark:border-transparent dark:text-gray-800 rounded-md border p-2 mt-1 mb-2'}})}}
+                {{ form_errors(formAgencia.nome) }}
+            </td>
+        </tr>
+        <tr>
+            <td>
+                {{ form_label(formAgencia.codigo, 'Código: ', {'label_attr': {'class': 'block text-sm text-gray-700 dark:text-gray-300 font-medium'}}) }}
+                {{ form_widget(formAgencia.codigo, {'attr': {'class': 'block w-full shadow-sm border-gray-300 dark:border-transparent dark:text-gray-800 rounded-md border p-2 mt-1 mb-2'}}) }}
+                {{ form_errors(formAgencia.codigo) }}
+            </td>
+            <td>
+                {{ form_label(formAgencia.telefone, 'Telefone: ', {'label_attr': {'class': 'block text-sm text-gray-700 dark:text-gray-300 font-medium'}}) }}
+                {{ form_widget(formAgencia.telefone, {'attr': {'class': 'block w-full shadow-sm border-gray-300 dark:border-transparent dark:text-gray-800 rounded-md border p-2 mt-1 mb-2'}}) }}
+                {{ form_errors(formAgencia.telefone) }}
+            </td>
+        </tr>
+        <tr>
+            <td colspan="2">
+                {{ form_label(formAgencia.endereco, 'Endereço: ', {'label_attr': {'class': 'block text-sm text-gray-700 dark:text-gray-300 font-medium'}}) }}
+                {{ form_widget(formAgencia.endereco, {'attr': {'class': 'block w-full shadow-sm border-gray-300 dark:border-transparent dark:text-gray-800 rounded-md border p-2 mt-1 mb-2'}}) }}
+                {{ form_errors(formAgencia.endereco) }}
+            </td>
+        </tr>
+    </table>
+    <div>
+        <button type="submit" class="block w-2/5 shadow-sm border-transparent bg-indigo-600 hover:bg-indigo-700 dark:bg-indigo-500 dark:hover:bg-indigo-400 text-white rounded-md border p-2 mt-4 mb-2">Atualizar dados</button>
+    </div>
+    {{ form_end(formAgencia) }}
+</div>
+{% endblock %}

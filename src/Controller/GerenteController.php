@@ -24,20 +24,17 @@ class GerenteController extends AbstractController
     public function editar($id, Gerente $gerente, Request $request, GerenteRepository $gerentes): Response
     {
         $formGerente = $this->createForm(GerenteType::class, $gerente);
-
-        //o formulário foi submetido? 
         $formGerente->handleRequest($request);
-        //se sim, tratar a submissão
         if ($formGerente->isSubmitted() && $formGerente->isValid()) {
             $gerente = $formGerente->getData();
             $gerentes->save($gerente, true);
             $this->addFlash('success', 'Os dados do Gerente foram atualizados!');
             return $this->redirectToRoute('app_listar_gerentes');
         }
-
-        return $this->renderForm(
-            'gerente/editar_gerente.html.twig',
-            [ 'formGerente' => $formGerente, 'gerente' => $gerente, 'id' => $id ]
-        );
+        return $this->renderForm('gerente/editar_gerente.html.twig',[
+            'formGerente' => $formGerente, 
+            'gerente' => $gerente, 
+            'id' => $id 
+        ]);
     }
 }

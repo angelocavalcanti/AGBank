@@ -5,8 +5,8 @@
 {% block body %}
 <div class="">
     {% if agencia %}
-        <h1>Informações da Agência:</h1>
-        <div>
+        <div class="text-teal-700 text-2xl block w-full align-middle py-2">Informações da Agência:</div>
+        <div class="pt-2">
             <li><strong>Nome: </strong> {{ agencia.nome|default('--') }} </li>
             <li><strong>Código: </strong> {{ agencia.codigo|default('--') }} </li>
             <li><strong>Gerente: </strong> {{ agencia.gerente.nome|default('--') }} </li>
@@ -14,8 +14,10 @@
             <li><strong>Endereço: </strong> {{ agencia.endereco|default('--') }} </li>
         </div>
         <div>
-            {# CRIAR CLASSE "CONTA" E CHAMAR AQUI PARA ABRIR NOVAS CONTAS #}
-            <button class="btn-abrir-conta">Desejo abrir uma conta nesta agência</button>
+            <button class="block w-1/3 shadow-sm border-transparent bg-indigo-600 hover:bg-indigo-700 dark:bg-indigo-500 dark:hover:bg-indigo-400 text-white rounded-md border p-2 mt-4 mb-2" onClick="window.location.href = '{{ path('app_editar_agencia', {id:agencia.id}) }}'">Editar dados da agência</button>
+        </div>
+        <div>
+            <button class="block w-1/3 shadow-sm border-transparent bg-indigo-600 hover:bg-indigo-700 dark:bg-indigo-500 dark:hover:bg-indigo-400 text-white rounded-md border p-2 mt-4 mb-2" onClick="window.location.href = '{{ path('app_criar_conta') }}'">Desejo abrir uma conta nesta agência</button>
         </div>
     {% else %}
         <br>

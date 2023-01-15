@@ -6,7 +6,6 @@
 <div>
     <div class="w-full flex items-center align-middle">
         <div class="text-teal-700 text-2xl block w-full align-middle">Criar Conta</div>
-        {# <div class="text-right block w-full"><button class="order-transparent bg-indigo-600 hover:bg-indigo-700 dark:bg-indigo-500 dark:hover:bg-indigo-400 text-white rounded-md border py-1 px-3" onClick="window.location.href = '{{ path('app_listar_gerentes') }}'">Lista de Gerentes</button></div> #}
     </div>
     <hr class="p-2 mt-2">    
     {{ form_start(formConta) }}
@@ -19,10 +18,15 @@
                 {{ form_widget(formConta.agencia, {'attr': {'class': 'block w-full shadow-sm border-gray-300 dark:border-transparent dark:text-gray-800 rounded-md border p-2 mt-1 mb-2'}}) }}
                 {{ form_errors(formConta.agencia) }}
             </td>
+            <td>
+                {{ form_label(formConta.tipo, 'Tipo: ', {'label_attr': {'class': 'block text-sm text-gray-700 dark:text-gray-300 font-medium'}}) }}
+                {{ form_widget(formConta.tipo, {'attr': {'class': 'block w-full shadow-sm border-gray-300 dark:border-transparent dark:text-gray-800 rounded-md border p-2 mt-1 mb-2'}}) }}
+                {{ form_errors(formConta.tipo) }}
+            </td>
         </tr>
     </table>    
     <div>
-        <button type="submit" class="block w-1/3 shadow-sm border-transparent bg-indigo-600 hover:bg-indigo-700 dark:bg-indigo-500 dark:hover:bg-indigo-400 text-white rounded-md border p-2 mt-4 mb-2 font-bold">Criar Conta</button>
+        <button type="submit" class="block w-1/3 shadow-sm border-transparent bg-indigo-600 hover:bg-indigo-700 dark:bg-indigo-500 dark:hover:bg-indigo-400 text-white rounded-md border p-2 mt-4 mb-2">Criar Conta</button>
     </div>
     {{ form_end(formConta) }}
 </div>

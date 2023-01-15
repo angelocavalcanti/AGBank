@@ -13,6 +13,7 @@ class ContaType extends AbstractType
     {
         $builder
             ->add('agencia')
+            ->add('tipo')
         ;
     }
 

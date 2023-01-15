@@ -15,6 +15,7 @@ use Symfony\Component\Routing\Annotation\Route;
 
 class AgenciaController extends AbstractController
 {
+    // LISTAR TODAS AS AGÊNCIAS:
     #[Route('/', name: 'app_listar_agencias')]
     public function index(AgenciaRepository $agencias): Response
     {
@@ -22,7 +23,8 @@ class AgenciaController extends AbstractController
             'agencias' => $agencias->findAll(),
         ]);
     }
-    
+   
+    // VER INFORMAÇÕES DE AGÊNCIA:
     #[Route('/agencia/{id}', name: 'app_agencia')]
     public function agencia(AgenciaRepository $agencias, $id): Response
     {
@@ -37,7 +39,8 @@ class AgenciaController extends AbstractController
             'agencia' => $agencia,
         ]);
     }
-
+   
+    // CRIAR AGÊNCIA:
     #[Route('/agencia/criar', name: 'app_criar_agencia', priority:1)]
     public function criar_agencia(AgenciaRepository $agencias, GerenteRepository $gerentes, Request $request): Response
     {
@@ -61,6 +64,25 @@ class AgenciaController extends AbstractController
         return $this->renderForm('agencia/criar_agencia.html.twig', [
             'formAgencia' => $formAgencia,
             'formGerente' => $formGerente 
+        ]);
+    }
+   
+    // EDITAR DADOS DE AGÊNCIA: 
+    #[Route('/agencia{id}/editar', name: 'app_editar_agencia')]
+    public function editar($id, Agencia $agencia, Request $request, AgenciaRepository $agencias): Response
+    {
+        $formAgencia = $this->createForm(AgenciaType::class, $agencia);
+        $formAgencia->handleRequest($request);
+        if ($formAgencia->isSubmitted() && $formAgencia->isValid()) {
+            $agencia = $formAgencia->getData();
+            $agencias->save($agencia, true);
+            $this->addFlash('success', 'Sucesso! Os dados da Agência foram atualizados.');
+            return $this->redirectToRoute('app_listar_agencias');
+        }
+        return $this->renderForm('agencia/editar_agencia.html.twig', [
+            'formAgencia' => $formAgencia,
+            'agencia' => $agencia,
+            'id' => $id
         ]);
     }
 }

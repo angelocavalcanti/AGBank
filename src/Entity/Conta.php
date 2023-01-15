@@ -27,6 +27,10 @@ class Conta
     #[ORM\JoinColumn(nullable: false)]
     private ?Agencia $agencia = null;
 
+    #[ORM\ManyToOne(inversedBy: 'contas')]
+    #[ORM\JoinColumn(nullable: false)]
+    private ?TipoConta $tipo = null;
+
     public function getId(): ?int
     {
         return $this->id;
@@ -76,6 +80,18 @@ class Conta
     public function setAgencia(?Agencia $agencia): self
     {
         $this->agencia = $agencia;
+
+        return $this;
+    }
+
+    public function getTipo(): ?TipoConta
+    {
+        return $this->tipo;
+    }
+
+    public function setTipo(?TipoConta $tipo): self
+    {
+        $this->tipo = $tipo;
 
         return $this;
     }
