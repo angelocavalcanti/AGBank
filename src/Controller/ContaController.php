@@ -4,10 +4,14 @@ namespace App\Controller;
 
 use App\Entity\Agencia;
 use App\Entity\Conta;
+use App\Entity\Transacao;
 use App\Form\ContaType;
+use App\Form\DepositoType;
 use App\Repository\AgenciaRepository;
 use App\Repository\ContaRepository;
+use App\Repository\TransacaoRepository;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
+use Symfony\Component\Form\Extension\DataCollector\FormDataExtractor;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
@@ -26,7 +30,7 @@ class ContaController extends AbstractController
                 $conta->setNumero(rand(1000, 10000));
             }
             $conta->setSaldo(0);
-            $conta->setDataAbertura(new \DateTime()); // Associa a data de abertura da conta à de criação do objeto
+            $conta->setDataAbertura(new \DateTime()); // Associa a data de criação do objeto à de abertura da conta
             $contas->save($conta, true);
             $agencia = $conta->getAgencia();
             $tipo = $conta->getTipo();
@@ -40,15 +44,60 @@ class ContaController extends AbstractController
         ]);
     }
 
-    #[Route('/conta/depositar', name: 'app_conta_deposito')]
-    public function depositar($numeroConta, ContaRepository $contas): Response
+    #[Route('/conta/depositar', name: 'app_depositar_conta')]
+    public function depositar(ContaRepository $contas, Request $request, TransacaoRepository $transacoes, AgenciaRepository $agencias): Response
     {
-        // encontrar conta e fazer o depósito aqui:
-        // falta implementar
-        $contas->findOneBy($numeroConta);
+        $formDeposito = $this->createForm(DepositoType::class, new Transacao());
+        $formDeposito->handleRequest($request);
+        if ($formDeposito->isSubmitted() && $formDeposito->isValid()) {
+            $valor = $formDeposito->get('valor')->getData();
+            $conta = $_REQUEST['conta'];
+            $agencia = $_REQUEST['agencia'];
+            $agenciaEncontrada = $agencias->findOneBy(array('codigo' => $agencia));
+            if($agenciaEncontrada){
+                $contaEncontrada = $contas->findOneBy(array('numero' => $conta));
+                if($contaEncontrada){
+                    if($contaEncontrada->getAgencia() == $agenciaEncontrada){
+                        if ($valor > 0 && is_numeric($valor)){  
+                            $transacao = new Transacao();
+                            $transacao->setDescricao('Depósito público'); 
+                            $transacao->setRemetente('Público'); 
+                            $transacao->setData(new \DateTime());
+                            $transacao->setDestinatario($contaEncontrada);
+                            $transacao->setValor($valor);
+                            $contaEncontrada->setSaldo($contaEncontrada->getSaldo() + $valor);
+                            $contas->save($contaEncontrada, true);
+                            $transacoes->save($transacao, true);
 
-        return $this->render('conta/listar_agencias.html.twig', [
-            'controller_name' => 'ContaController',
+                            $this->addFlash('success', 'Sucesso! Valor depositado.');
+                            $this->addFlash('success', 'Depositado R$'.number_format($valor, 2, ',', '.').' na conta '.$contaEncontrada. ' da Agência '.$agenciaEncontrada. ' ('.$agenciaEncontrada->getCodigo().')');
+                            return $this->redirectToRoute('app_listar_agencias');
+                        }
+                        else {
+                            $this->addFlash('error', 'Erro! Valor não pode ser negativo.');
+                        }
+                    }
+                    else {
+                        $this->addFlash('error', 'Erro! Conta não pertence à Agência escolhida.');
+                    }
+                }
+                else {
+                    $this->addFlash('error', 'Erro! Conta não encontrada.');
+                }
+            }else{
+                $this->addFlash('error', 'Erro! Agência não encontrada.');
+            }
+        } 
+        return $this->renderForm('conta/depositar_conta.html.twig', [
+            'formDeposito' => $formDeposito
         ]);
     }
+
+    #[Route('/conta/listar', name: 'app_listar_contas')]
+    public function listar(ContaRepository $contas): Response
+    {
+        return $this->render('conta/listar_contas.html.twig', [
+            'contas' => $contas->findAll(),
+        ]);
+    }    
 }

@@ -3,6 +3,8 @@
 namespace App\Entity;
 
 use App\Repository\ContaRepository;
+use Doctrine\Common\Collections\ArrayCollection;
+use Doctrine\Common\Collections\Collection;
 use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
 
@@ -30,6 +32,19 @@ class Conta
     #[ORM\ManyToOne(inversedBy: 'contas')]
     #[ORM\JoinColumn(nullable: false)]
     private ?TipoConta $tipo = null;
+
+    #[ORM\OneToMany(mappedBy: 'destinatario', targetEntity: Transacao::class)]
+    private Collection $transacoes;
+
+    public function __construct()
+    {
+        $this->transacoes = new ArrayCollection();
+    }
+
+    public function __toString()
+    {
+        return $this->numero;
+    }
 
     public function getId(): ?int
     {
@@ -92,6 +107,36 @@ class Conta
     public function setTipo(?TipoConta $tipo): self
     {
         $this->tipo = $tipo;
+
+        return $this;
+    }
+
+    /**
+     * @return Collection<int, Transacao>
+     */
+    public function getTransacoes(): Collection
+    {
+        return $this->transacoes;
+    }
+
+    public function addTransaco(Transacao $transaco): self
+    {
+        if (!$this->transacoes->contains($transaco)) {
+            $this->transacoes->add($transaco);
+            $transaco->setDestinatario($this);
+        }
+
+        return $this;
+    }
+
+    public function removeTransaco(Transacao $transaco): self
+    {
+        if ($this->transacoes->removeElement($transaco)) {
+            // set the owning side to null (unless already changed)
+            if ($transaco->getDestinatario() === $this) {
+                $transaco->setDestinatario(null);
+            }
+        }
 
         return $this;
     }

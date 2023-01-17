@@ -14,7 +14,7 @@ final class Version20230114175854 extends AbstractMigration
 {
     public function getDescription(): string
     {
-        return '';
+        return 'Criada entidade TipoConta e relacionamento N:1 entre CONTA e ela';
     }
 
     public function up(Schema $schema): void

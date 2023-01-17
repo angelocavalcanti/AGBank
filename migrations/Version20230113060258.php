@@ -14,7 +14,7 @@ final class Version20230113060258 extends AbstractMigration
 {
     public function getDescription(): string
     {
-        return 'Cria relacionamento 1:N entre AGENCIA e CONTA';
+        return 'Criado relacionamento 1:N entre AGENCIA e CONTA';
     }
 
     public function up(Schema $schema): void

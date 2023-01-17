@@ -26,9 +26,9 @@
                     <div class="ml-2 mr-2">
                         <a href="{{ path('app_criar_agencia') }}">Criar Agência</a>
                     </div> |
-                    {# <div class="ml-2 mr-2">
-                        <a href="{{ path('app_depositar') }}">Efetuar Depósito</a>
-                    </div> | #}
+                    <div class="ml-2 mr-2">
+                        <a href="{{ path('app_depositar_conta') }}">Efetuar Depósito</a>
+                    </div> |
                     <div class="ml-2 mr-2">
                         {# <a href="{{ path('app_settings_profile') }}">Profile Settings</a> #}
                         <a href="{{ path('app_listar_agencias') }}">Profile Settings</a>
@@ -55,6 +55,9 @@
         <div class="w-full md:w-11/12 mx-auto p-1 pt-12">
             {% for message in app.flashes('success') %}
                 <div class="rounded-md p-2 border-green-300 bg-green-50 border dark:border-green-600 dark:bg-green-700 dark:text-white mb-4">{{ message }}</div>
+            {% endfor %}
+            {% for message in app.flashes('error') %}
+                <div class="rounded-md p-2 border-red-300 bg-red-50 border dark:border-red-600 dark:bg-red-700 dark:text-white mb-4">{{ message }}</div>
             {% endfor %}
             {% block body %}{% endblock %}
         </div>        
