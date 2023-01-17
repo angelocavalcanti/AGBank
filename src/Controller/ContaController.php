@@ -93,11 +93,72 @@ class ContaController extends AbstractController
         ]);
     }
 
+    // LISTAR TODAS AS CONTAS EXISTENTES DE TODAS AS AGÊNCIA:
     #[Route('/conta/listar', name: 'app_listar_contas')]
     public function listar(ContaRepository $contas): Response
     {
         return $this->render('conta/listar_contas.html.twig', [
             'contas' => $contas->findAll(),
         ]);
+    }
+    
+    #[Route('/conta/transferir', name: 'app_transferir_conta')]
+    public function transferir(ContaRepository $contas, AgenciaRepository $agencias, TransacaoRepository $transacoes, Request $request): Response
+    {
+        // =========================================================
+        // efetuar transferencia
+        // dizer agencia e conta destino
+        // dizer valor 
+
+        $formTransferir = $this->createForm(DepositoType::class, new Transacao());
+        $formTransferir->handleRequest($request);
+        if ($formTransferir->isSubmitted() && $formTransferir->isValid()) {
+            $valor = $formTransferir->get('valor')->getData();
+            $agencia = $_REQUEST['agencia'];
+            $conta = $_REQUEST['conta'];
+            $agenciaEncontrada = $agencias->findOneBy(array('codigo' => $agencia));
+            if($agenciaEncontrada){
+                $contaEncontrada = $contas->findOneBy(array('numero' => $conta));
+                if($contaEncontrada){
+                    if($contaEncontrada->getAgencia() == $agenciaEncontrada){
+                        if ($valor > 0 && is_numeric($valor)){ // && user.conta->getSaldo() >= valor  
+                            $transacao = new Transacao();
+                            $transacao->setDescricao('Transferência'); 
+                            $transacao->setRemetente('Usuário'); //user.conta
+                            $transacao->setData(new \DateTime());
+                            $transacao->setDestinatario($contaEncontrada);
+                            $transacao->setValor($valor);
+                            //$user.conta->setSaldo($contaEncontrada->getSaldo() - $valor);
+                            $contaEncontrada->setSaldo($contaEncontrada->getSaldo() + $valor);
+                            $contas->save($contaEncontrada, true);
+                            //$contas->save($user.conta, true);
+                            $transacoes->save($transacao, true);
+
+                            $this->addFlash('success', 'Sucesso! Valor transferido.');
+                            // $this->addFlash('success', 'Transferido R$'.number_format($valor, 2, ',', '.').' da conta '.$user.conta.' para a conta '.$contaEncontrada. ' da Agência '.$agenciaEncontrada. ' ('.$agenciaEncontrada->getCodigo().')');
+                            return $this->redirectToRoute('app_listar_contas');
+                        }
+                        else {
+                            $this->addFlash('error', 'Erro! Valor não pode ser negativo.');
+                        }
+                    }
+                    else {
+                        $this->addFlash('error', 'Erro! Conta não pertence à Agência escolhida.');
+                    }
+                }
+                else {
+                    $this->addFlash('error', 'Erro! Conta não encontrada.');
+                }
+            }else{
+                $this->addFlash('error', 'Erro! Agência não encontrada.');
+            }
+        } 
+        return $this->renderForm('conta/transferir_conta.html.twig', [
+            'formTransferir' => $formTransferir,
+            'contas' => $contas
+        ]);
+        
+
+        // =========================================================
     }    
 }
