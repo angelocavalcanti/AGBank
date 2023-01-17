@@ -25,6 +25,10 @@ class Gerente
     #[ORM\OneToOne(mappedBy: 'gerente', cascade: ['persist', 'remove'])]
     private ?Agencia $agencia = null;
 
+    #[ORM\OneToOne(inversedBy: 'gerente', cascade: ['persist', 'remove'])]
+    #[ORM\JoinColumn(nullable: false)]
+    private ?User $user = null;
+
     public function __toString()
     {
         return $this->nome;
@@ -84,6 +88,18 @@ class Gerente
         }
 
         $this->agencia = $agencia;
+
+        return $this;
+    }
+
+    public function getUser(): ?User
+    {
+        return $this->user;
+    }
+
+    public function setUser(User $user): self
+    {
+        $this->user = $user;
 
         return $this;
     }
