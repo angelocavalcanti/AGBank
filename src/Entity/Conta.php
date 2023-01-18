@@ -36,6 +36,10 @@ class Conta
     #[ORM\OneToMany(mappedBy: 'destinatario', targetEntity: Transacao::class)]
     private Collection $transacoes;
 
+    #[ORM\ManyToOne(inversedBy: 'conta')]
+    #[ORM\JoinColumn(nullable: false)]
+    private ?User $user = null;
+
     public function __construct()
     {
         $this->transacoes = new ArrayCollection();
@@ -137,6 +141,18 @@ class Conta
                 $transaco->setDestinatario(null);
             }
         }
+
+        return $this;
+    }
+
+    public function getUser(): ?User
+    {
+        return $this->user;
+    }
+
+    public function setUser(?User $user): self
+    {
+        $this->user = $user;
 
         return $this;
     }

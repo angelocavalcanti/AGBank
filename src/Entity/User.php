@@ -3,6 +3,8 @@
 namespace App\Entity;
 
 use App\Repository\UserRepository;
+use Doctrine\Common\Collections\ArrayCollection;
+use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Component\Security\Core\User\PasswordAuthenticatedUserInterface;
 use Symfony\Component\Security\Core\User\UserInterface;
@@ -38,6 +40,14 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
 
     #[ORM\OneToOne(mappedBy: 'user', cascade: ['persist', 'remove'])]
     private ?Gerente $gerente = null;
+
+    #[ORM\OneToMany(mappedBy: 'user', targetEntity: Conta::class, orphanRemoval: true)]
+    private Collection $conta;
+
+    public function __construct()
+    {
+        $this->conta = new ArrayCollection();
+    }
 
     public function getId(): ?int
     {
@@ -158,6 +168,36 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
         }
 
         $this->gerente = $gerente;
+
+        return $this;
+    }
+
+    /**
+     * @return Collection<int, Conta>
+     */
+    public function getConta(): Collection
+    {
+        return $this->conta;
+    }
+
+    public function addContum(Conta $contum): self
+    {
+        if (!$this->conta->contains($contum)) {
+            $this->conta->add($contum);
+            $contum->setUser($this);
+        }
+
+        return $this;
+    }
+
+    public function removeContum(Conta $contum): self
+    {
+        if ($this->conta->removeElement($contum)) {
+            // set the owning side to null (unless already changed)
+            if ($contum->getUser() === $this) {
+                $contum->setUser(null);
+            }
+        }
 
         return $this;
     }
