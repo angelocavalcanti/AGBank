@@ -4,6 +4,8 @@ namespace App\DataFixtures;
 
 use App\Entity\Agencia;
 use App\Entity\Gerente;
+use App\Entity\TipoConta;
+use App\Entity\User;
 use Doctrine\Bundle\FixturesBundle\Fixture;
 use Doctrine\Persistence\ObjectManager;
 
@@ -34,20 +36,44 @@ class AppFixtures extends Fixture
 
         for ($i = 0; $i < 10; $i++) {        
             $gerente = new Gerente();
-            $gerente->setNome('Gustavo '.$i);
+            $gerente->setNome('Angelo '.$i);
             $gerente->setCpf('123.456.789.1'.$i);
-            $gerente->setMatricula('007'.$i);
+            $gerente->setMatricula('107'.$i);
             $manager->persist($gerente);
 
             $agencia = new Agencia();
-            $agencia->setCodigo('00'.$i);
-            $agencia->setEndereco('Rua Onze, '.$i.', Maravilha, Petrolina/PE');
-            $agencia->setNome('Maravilha '. $i);
+            $agencia->setCodigo('200'.$i);
+            $agencia->setEndereco('Rua Onze, '.$i.'1, Centro, Petrolina/PE');
+            $agencia->setNome('Teste '. $i);
             $agencia->setTelefone('8798734-1963');
             $agencia->setGerente($gerente);
             $manager->persist($agencia);
+
+            $user = new User();
+            $user->setNome('aggc '.$i);
+            $user->setCpf($gerente->getCpf());
+            $user->setEmail('a'.$i.'@gmail.com');
+            $user->setPassword('123'.$i);
+            $user->setTelefone('87988117'.$i);
+            $user->setGerente($gerente);
+            $manager->persist($user);
+
             
             $manager->flush();
         }
+        $tipoConta = new TipoConta();
+        $tipoConta->setTipo('Corrente');
+        $manager->persist($tipoConta);
+        $manager->flush();
+        
+        $tipoConta = new TipoConta();
+        $tipoConta->setTipo('Poupança');
+        $manager->persist($tipoConta);
+        $manager->flush();
+
+        $tipoConta = new TipoConta();
+        $tipoConta->setTipo('Salário');
+        $manager->persist($tipoConta);
+        $manager->flush();
     }
 }

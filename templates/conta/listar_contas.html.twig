@@ -1,6 +1,6 @@
 {% extends 'base.html.twig' %}
 
-{% block title %}AGBank{% endblock %}
+{% block title %}AGBank - Contas{% endblock %}
 
 {% block body %}
 <div class="">
@@ -12,12 +12,15 @@
             <li><strong>Número da Conta: </strong> {{ conta.numero|default('--') }} </li>
             <li><strong>Tipo: </strong> {{ conta.tipo.tipo|default('--') }} </li>
             <li><strong>Data de abertura: </strong> {{ conta.dataAbertura|date("d/m/Y") }} </li>
-            {% if conta.saldo >= 0 %}
-            <li><strong>Saldo: </strong>R$ {{ conta.saldo|number_format(2, ',', '.') }} </li>
+            {% if conta.saldo > 0 %}
+            <li><strong>Saldo: </strong><tag class="text-blue-700">R$ {{ conta.saldo|number_format(2, ',', '.') }} </tag></li>
             {% else %}
             <li><strong>Saldo: </strong><tag class="text-red-700">R$ {{ conta.saldo|number_format(2, ',', '.') }} 
             </tag></li>
             {% endif %}
+        </div>
+        <div>
+            <button class="block w-1/3 shadow-sm border-transparent bg-red-500 hover:bg-red-600 dark:bg-indigo-500 dark:hover:bg-indigo-400 text-white rounded-md border p-2 mt-4 mb-2" onClick="window.location.href = '{{ path('app_excluir_conta', {id:conta.id }) }}'">Excluir Conta</button>
         </div>
         <div>
             <button class="block w-1/3 shadow-sm border-transparent bg-indigo-600 hover:bg-indigo-700 dark:bg-indigo-500 dark:hover:bg-indigo-400 text-white rounded-md border p-2 mt-4 mb-2" onClick="window.location.href = '{{ path('app_listar_agencias') }}'">Voltar para página inicial</button>

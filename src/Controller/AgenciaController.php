@@ -42,7 +42,7 @@ class AgenciaController extends AbstractController
    
     // CRIAR AGÊNCIA:
     #[Route('/agencia/criar', name: 'app_criar_agencia', priority:1)]
-    public function criar_agencia(AgenciaRepository $agencias, GerenteRepository $gerentes, Request $request): Response
+    public function criar(AgenciaRepository $agencias, GerenteRepository $gerentes, Request $request): Response
     {
         $formAgencia = $this->createForm(AgenciaType::class, new Agencia());
         $formGerente = $this->createForm(GerenteType::class, new Gerente());
@@ -85,4 +85,18 @@ class AgenciaController extends AbstractController
             'id' => $id
         ]);
     }
+
+     // EXCLUIR AGÊNCIA: 
+     #[Route('/agencia{id}/excluir', name: 'app_excluir_agencia')]
+     public function excluir($id, Agencia $agencia,  AgenciaRepository $agencias): Response
+     {
+        $agencias->remove($agencia, true);
+        if(!$agencias->findOneBy(['id' => $id])){
+            $this->addFlash('success', 'Sucesso! Agência removida.');    
+        }     
+        else{
+            $this->addFlash('error', 'Erro! Agência não removida, tente novamente.');
+        }
+        return $this->redirectToRoute('app_listar_agencias');
+     }
 }

@@ -2,7 +2,6 @@
 
 namespace App\Controller;
 
-use App\Entity\Agencia;
 use App\Entity\Conta;
 use App\Entity\Transacao;
 use App\Form\ContaType;
@@ -11,7 +10,6 @@ use App\Repository\AgenciaRepository;
 use App\Repository\ContaRepository;
 use App\Repository\TransacaoRepository;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
-use Symfony\Component\Form\Extension\DataCollector\FormDataExtractor;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
@@ -36,7 +34,7 @@ class ContaController extends AbstractController
             $tipo = $conta->getTipo();
             $this->addFlash('success', 'Sucesso! Conta criada.');
             $this->addFlash('success', 'Conta '.$tipo->getTipo().': '.$conta->getNumero().'. Agência: '.$agencia->getCodigo().' ('.$agencia->getNome().')');
-            return $this->redirectToRoute('app_listar_agencias');
+            return $this->redirectToRoute('app_listar_contas');
         }
         // RETORNAR PARA PÁGINA DE LOGIN CASO NÃO ESTEJA LOGADO PARA ABRIR CONTA
         return $this->renderForm('conta/criar_conta.html.twig', [
@@ -105,11 +103,6 @@ class ContaController extends AbstractController
     #[Route('/conta/transferir', name: 'app_transferir_conta')]
     public function transferir(ContaRepository $contas, AgenciaRepository $agencias, TransacaoRepository $transacoes, Request $request): Response
     {
-        // =========================================================
-        // efetuar transferencia
-        // dizer agencia e conta destino
-        // dizer valor 
-
         $formTransferir = $this->createForm(DepositoType::class, new Transacao());
         $formTransferir->handleRequest($request);
         if ($formTransferir->isSubmitted() && $formTransferir->isValid()) {
@@ -121,22 +114,27 @@ class ContaController extends AbstractController
                 $contaEncontrada = $contas->findOneBy(array('numero' => $conta));
                 if($contaEncontrada){
                     if($contaEncontrada->getAgencia() == $agenciaEncontrada){
-                        if ($valor > 0 && is_numeric($valor)){ // && user.conta->getSaldo() >= valor  
-                            $transacao = new Transacao();
-                            $transacao->setDescricao('Transferência'); 
-                            $transacao->setRemetente('Usuário'); //user.conta
-                            $transacao->setData(new \DateTime());
-                            $transacao->setDestinatario($contaEncontrada);
-                            $transacao->setValor($valor);
-                            //$user.conta->setSaldo($contaEncontrada->getSaldo() - $valor);
-                            $contaEncontrada->setSaldo($contaEncontrada->getSaldo() + $valor);
-                            $contas->save($contaEncontrada, true);
-                            //$contas->save($user.conta, true);
-                            $transacoes->save($transacao, true);
+                        if ($valor > 0 && is_numeric($valor)){ 
+                            // if( user.conta->getSaldo() >= valor){  
+                                $transacao = new Transacao();
+                                $transacao->setDescricao('Transferência'); 
+                                $transacao->setRemetente('Usuário'); //user.conta
+                                $transacao->setData(new \DateTime());
+                                $transacao->setDestinatario($contaEncontrada);
+                                $transacao->setValor($valor);
+                                //$user.conta->setSaldo($contaEncontrada->getSaldo() - $valor);
+                                $contaEncontrada->setSaldo($contaEncontrada->getSaldo() + $valor);
+                                $contas->save($contaEncontrada, true);
+                                //$contas->save($user.conta, true);
+                                $transacoes->save($transacao, true);
 
-                            $this->addFlash('success', 'Sucesso! Valor transferido.');
-                            // $this->addFlash('success', 'Transferido R$'.number_format($valor, 2, ',', '.').' da conta '.$user.conta.' para a conta '.$contaEncontrada. ' da Agência '.$agenciaEncontrada. ' ('.$agenciaEncontrada->getCodigo().')');
-                            return $this->redirectToRoute('app_listar_contas');
+                                $this->addFlash('success', 'Sucesso! Valor transferido.');
+                                // $this->addFlash('success', 'Transferido R$'.number_format($valor, 2, ',', '.').' da conta '.$user.conta.' para a conta '.$contaEncontrada. ' da Agência '.$agenciaEncontrada. ' ('.$agenciaEncontrada->getCodigo().')');
+                                return $this->redirectToRoute('app_listar_contas');
+                            // }
+                            // else {
+                            //     this->addFlash('error', 'Erro! Saldo insuficiente.');
+                            // }
                         }
                         else {
                             $this->addFlash('error', 'Erro! Valor não pode ser negativo.');
@@ -161,4 +159,18 @@ class ContaController extends AbstractController
 
         // =========================================================
     }    
+
+    // EXCLUIR CONTA: 
+    #[Route('/conta{id}/excluir', name: 'app_excluir_conta')]
+    public function excluir($id, Conta $conta, ContaRepository $contas): Response
+    {
+    $contas->remove($conta, true);
+    if(!$contas->findOneBy(['id' => $id])){
+        $this->addFlash('success', 'Sucesso! Conta removida.');    
+    }     
+    else{
+        $this->addFlash('error', 'Erro! Conta não removida, tente novamente.');
+    }
+    return $this->redirectToRoute('app_listar_contas');
+    }
 }
