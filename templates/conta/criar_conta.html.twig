@@ -1,13 +1,14 @@
 {% extends 'base.html.twig' %}
 
-{% block title %}AGBank - Criar Conta{% endblock %}
+{% block title %}AGBank - Nova Conta{% endblock %}
 
 {% block body %}
 <div>
-    <div class="w-full flex items-center align-middle">
-        <div class="text-teal-700 text-2xl block w-full align-middle">Criar Conta</div>
+    <div class="w-full items-center align-middle">
+        <div class="text-teal-700 text-2xl block w-full align-middle">Solicitar abertura de conta</div>
     </div>
-    <hr class="p-2 mt-2">    
+    <hr class="p-2 mt-2">
+    <div class="text-teal-700 text-xl block w-full align-middle pb-3">Escolha a Agência e o tipo de conta que deseja solicitar</div>    
     {{ form_start(formConta) }}
     <div>{{ form_errors(formConta) }}</div>
     
@@ -26,8 +27,11 @@
         </tr>
     </table>    
     <div>
-        <button type="submit" class="block w-1/3 shadow-sm border-transparent bg-indigo-600 hover:bg-indigo-700 dark:bg-indigo-500 dark:hover:bg-indigo-400 text-white rounded-md border p-2 mt-4 mb-2">Criar Conta</button>
+        <button type="submit" class="block w-1/3 shadow-sm border-transparent bg-indigo-600 hover:bg-indigo-700 dark:bg-indigo-500 dark:hover:bg-indigo-400 text-white rounded-md border p-2 mt-4 mb-2">Solicitar</button>
     </div>
     {{ form_end(formConta) }}
+    <div>
+        <button class="block w-1/3 shadow-sm border-transparent bg-indigo-600 hover:bg-indigo-700 dark:bg-indigo-500 dark:hover:bg-indigo-400 text-white rounded-md border p-2 mt-4 mb-2" onClick="window.location.href = '{{ path('app_listar_agencias') }}'">Ver Agências</button>
+    </div>
 </div>
 {% endblock %}

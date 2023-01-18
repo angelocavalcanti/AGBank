@@ -3,6 +3,7 @@
 namespace App\DataFixtures;
 
 use App\Entity\Agencia;
+use App\Entity\Conta;
 use App\Entity\Gerente;
 use App\Entity\TipoConta;
 use App\Entity\User;
@@ -34,46 +35,55 @@ class AppFixtures extends Fixture
         // $agencia3->setCodigo('321');
         // $manager->persist($agencia3);
 
-        // for ($i = 0; $i < 10; $i++) {        
-        //     $gerente = new Gerente();
-        //     $gerente->setNome('Angelo '.$i);
-        //     $gerente->setCpf('123.456.789.1'.$i);
-        //     $gerente->setMatricula('107'.$i);
-        //     $manager->persist($gerente);
-
-        //     $agencia = new Agencia();
-        //     $agencia->setCodigo('200'.$i);
-        //     $agencia->setEndereco('Rua Onze, '.$i.'1, Centro, Petrolina/PE');
-        //     $agencia->setNome('Teste '. $i);
-        //     $agencia->setTelefone('8798734-1963');
-        //     $agencia->setGerente($gerente);
-        //     $manager->persist($agencia);
-
-        //     $user = new User();
-        //     $user->setNome('aggc '.$i);
-        //     $user->setCpf($gerente->getCpf());
-        //     $user->setEmail('a'.$i.'@gmail.com');
-        //     $user->setPassword('123'.$i);
-        //     $user->setTelefone('87988117'.$i);
-        //     $user->setGerente($gerente);
-        //     $manager->persist($user);
-
-            
-        //     $manager->flush();
-        // }
-        // $tipoConta = new TipoConta();
-        // $tipoConta->setTipo('Corrente');
-        // $manager->persist($tipoConta);
-        // $manager->flush();
+        $tipoConta = new TipoConta();
+        $tipoConta->setTipo('Corrente');
+        $manager->persist($tipoConta);
+        $manager->flush();
         
-        // $tipoConta = new TipoConta();
-        // $tipoConta->setTipo('Poupança');
-        // $manager->persist($tipoConta);
-        // $manager->flush();
+        $tipoConta = new TipoConta();
+        $tipoConta->setTipo('Poupança');
+        $manager->persist($tipoConta);
+        $manager->flush();
 
-        // $tipoConta = new TipoConta();
-        // $tipoConta->setTipo('Salário');
-        // $manager->persist($tipoConta);
-        // $manager->flush();
+        $tipoConta = new TipoConta();
+        $tipoConta->setTipo('Salário');
+        $manager->persist($tipoConta);
+        $manager->flush();
+
+        for ($i = 0; $i < 10; $i++) {        
+            $gerente = new Gerente();
+            $gerente->setNome('Angelo '.$i);
+            $gerente->setCpf('123.456.789.1'.$i);
+            $gerente->setMatricula('107'.$i);
+            $manager->persist($gerente);
+
+            $agencia = new Agencia();
+            $agencia->setCodigo('200'.$i);
+            $agencia->setEndereco('Rua Onze, '.$i.'1, Centro, Petrolina/PE');
+            $agencia->setNome('Teste '. $i);
+            $agencia->setTelefone('8798734-1963');
+            $agencia->setGerente($gerente);
+            $manager->persist($agencia);
+
+            $user = new User();
+            $user->setNome('aggc '.$i);
+            $user->setCpf($gerente->getCpf());
+            $user->setEmail('a'.$i.'@gmail.com');
+            $user->setPassword('123'.$i);
+            $user->setTelefone('87988117'.$i);
+            $user->setGerente($gerente);
+            $manager->persist($user);
+
+            $conta = new Conta();
+            $conta->setNumero('550'.$i);
+            $conta->setSaldo(0);
+            $conta->setDataAbertura(new \DateTime());
+            $conta->setAgencia($agencia);
+            $conta->setTipo($tipoConta);
+            $conta->setUser($user);
+            $manager->persist($conta);
+
+            $manager->flush();
+        }
     }
 }

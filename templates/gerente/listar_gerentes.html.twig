@@ -6,9 +6,9 @@
 <div>
 
     <div class="text-teal-700 text-3xl block w-full align-middle">Lista de Gerentes<hr></div>
-
+    <div class="grid grid-cols-2 sm:grid-cols-2 xl:grid-cols-2 gap-2">
     {% for gerente in gerentes %}
-        <div class="mt-5 mb-2">
+        <div class="mt-5 mb-3 px-2 pt-2 w-2/3 rounded-md bg-gray-200 dark:bg-gray-700">
         <div><strong>Gerente:</strong> {{gerente.nome}}</div>
         <div><strong>CPF:</strong> {{ gerente.cpf }}</div>
         <div><strong>Matrícula:</strong> {{ gerente.matricula }}</div>
@@ -19,10 +19,10 @@
         <div><strong>Código:</strong> {{ gerente.agencia.codigo }}</div>
         <div><strong>Endereço:</strong> {{ gerente.agencia.endereco }}</div>
         <div><strong>Telefone:</strong> {{ gerente.agencia.telefone }}</div>
-        <button class="block w-1/6 shadow-sm border-transparent bg-indigo-600 hover:bg-indigo-700 dark:bg-indigo-500 dark:hover:bg-indigo-400 text-white rounded-md border p-2 mt-4 mb-2" onClick="window.location.href = '{{ path('app_editar_gerente', {id:gerente.id}) }}'">Editar Gerente</button>
-        </div>
-        <hr>
+        <div class="pb-2 w-full"><button class="block w-full shadow-sm border-transparent bg-indigo-600 hover:bg-indigo-700 dark:bg-indigo-500 dark:hover:bg-indigo-400 text-white rounded-md border p-2 mt-4 mb-2" onClick="window.location.href = '{{ path('app_editar_gerente', {id:gerente.id}) }}'">Editar Gerente</button>
+        </div></div>
     {% endfor %}
+    </div>
 </div>    
 </div>
 {% endblock %}
