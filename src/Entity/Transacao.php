@@ -3,6 +3,7 @@
 namespace App\Entity;
 
 use App\Repository\TransacaoRepository;
+use DateTime;
 use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Component\Validator\Constraints as Assert;
@@ -11,6 +12,11 @@ use Symfony\Component\Validator\Constraints as Assert;
 #[ORM\Entity(repositoryClass: TransacaoRepository::class)]
 class Transacao
 {
+    public function __construct()
+    {
+        $this->data = new DateTime();
+    }
+
     #[ORM\Id]
     #[ORM\GeneratedValue]
     #[ORM\Column]

@@ -12,7 +12,7 @@
         </div>
     </div>
     <div class="text-teal-700 text-xl mb-5">Veja nossas agências:<hr></div>
-    <div class="grid grid-cols-2 sm:grid-cols-2 xl:grid-cols-2 gap-2">
+    <div class="grid grid-cols-1 sm:grid-cols-2 xl:grid-cols-2 gap-y-3">
         {% for key, agencia in agencias %}
             <div class="block w-2/3 h-2/3 shadow-xl border-transparent bg-teal-600 dark:bg-indigo-500 text-white rounded-md p-2 pb-3 mt-3">
                 <div class="pb-1 font-bold">Agência {{agencia.nome}}</div>
@@ -21,8 +21,8 @@
             </div>
         {% endfor %}
     </div>
-    <div> {# CRIAR NOVA AGÊNCIA - PERMITIDO APENAS PARA O PERFIL ADMINISTRADOR #}
-        <button class="block w-full shadow-sm border-transparent bg-green-600 hover:bg-green-700 dark:bg-indigo-500 dark:hover:bg-indigo-400 text-white rounded-md border p-2 mt-4 mb-2" onClick="window.location.href = '{{ path('app_criar_agencia') }}'">Criar nova Agência</button> 
-    </div>
+    {# <div> {# CRIAR NOVA AGÊNCIA - PERMITIDO APENAS PARA O PERFIL ADMINISTRADOR #}
+        {# <button class="block w-full shadow-sm border-transparent bg-green-600 hover:bg-green-700 dark:bg-indigo-500 dark:hover:bg-indigo-400 text-white rounded-md border p-2 mt-4 mb-2" onClick="window.location.href = '{{ path('app_criar_agencia') }}'">Criar nova Agência</button>  #}
+    {# </div> #} 
 </div>
 {% endblock %}

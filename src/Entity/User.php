@@ -44,6 +44,11 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     #[ORM\OneToMany(mappedBy: 'user', targetEntity: Conta::class, orphanRemoval: true)]
     private Collection $conta;
 
+    public function __toString()
+    {
+        return $this->email;
+    }
+
     public function __construct()
     {
         $this->conta = new ArrayCollection();

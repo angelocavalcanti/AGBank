@@ -9,9 +9,15 @@ use App\Entity\TipoConta;
 use App\Entity\User;
 use Doctrine\Bundle\FixturesBundle\Fixture;
 use Doctrine\Persistence\ObjectManager;
+use Symfony\Component\PasswordHasher\Hasher\UserPasswordHasherInterface;
+
 
 class AppFixtures extends Fixture
 {
+    public function __construct(private UserPasswordHasherInterface $hasher){
+
+    }
+
     public function load(ObjectManager $manager): void
     {
         // $agencia1 = new Agencia();
@@ -38,16 +44,24 @@ class AppFixtures extends Fixture
         $tipoConta = new TipoConta();
         $tipoConta->setTipo('Corrente');
         $manager->persist($tipoConta);
-        $manager->flush();
         
         $tipoConta = new TipoConta();
         $tipoConta->setTipo('Poupança');
         $manager->persist($tipoConta);
-        $manager->flush();
 
         $tipoConta = new TipoConta();
         $tipoConta->setTipo('Salário');
         $manager->persist($tipoConta);
+
+        $user = new User();
+        $user->setNome('Angelo Gustavo');
+        $user->setCpf('123.456.789-10');
+        $user->setEmail('admin@admin.com');
+        $user->setPassword($this->hasher->hashPassword($user, '123'));
+        $user->setTelefone('87988117733');
+        $user->setRoles(['ROLE_ADMIN']);
+        $manager->persist($user);
+        
         $manager->flush();
 
         for ($i = 0; $i < 10; $i++) {        
@@ -60,24 +74,33 @@ class AppFixtures extends Fixture
             $agencia = new Agencia();
             $agencia->setCodigo('200'.$i);
             $agencia->setEndereco('Rua Onze, '.$i.'1, Centro, Petrolina/PE');
-            $agencia->setNome('Teste '. $i);
+            $agencia->setNome('Ag '. $i);
             $agencia->setTelefone('8798734-1963');
             $agencia->setGerente($gerente);
             $manager->persist($agencia);
 
+            $userGerente = new User();
+            $userGerente->setNome('Nome Gerente '.$i);
+            $userGerente->setCpf($gerente->getCpf());
+            $userGerente->setEmail('gerente'.$i.'@agbank.com');
+            $userGerente->setPassword($this->hasher->hashPassword($userGerente, '123'));
+            $userGerente->setTelefone('87988117'.$i);
+            $userGerente->setGerente($gerente);
+            $userGerente->setRoles(['ROLE_GERENTE']);
+            $manager->persist($userGerente);
+
             $user = new User();
-            $user->setNome('aggc '.$i);
-            $user->setCpf($gerente->getCpf());
-            $user->setEmail('a'.$i.'@gmail.com');
-            $user->setPassword('123'.$i);
-            $user->setTelefone('87988117'.$i);
-            $user->setGerente($gerente);
+            $user->setNome('Nome Usuário '.$i);
+            $user->setCpf('1112223334'.$i);
+            $user->setEmail('usuario'.$i.'@agbank.com');
+            $user->setPassword($this->hasher->hashPassword($user, '123'));
+            $user->setTelefone('8799911070'.$i);
+            $user->setRoles(['ROLE_USER']);
             $manager->persist($user);
 
             $conta = new Conta();
-            $conta->setNumero('550'.$i);
+            $conta->setNumero('100'.$i);
             $conta->setSaldo(0);
-            $conta->setDataAbertura(new \DateTime());
             $conta->setAgencia($agencia);
             $conta->setTipo($tipoConta);
             $conta->setUser($user);

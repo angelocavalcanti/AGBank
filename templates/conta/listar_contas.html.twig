@@ -5,31 +5,36 @@
 {% block body %}
 <div class="">
     {% if contas %}
+        <div class="text-teal-700 text-2xl block w-full align-middle py-2">Informações de Conta:</div><hr>
+        <div class="grid grid-cols-1 sm:grid-cols-2 xl:grid-cols-2 w-2/3 gap-x-6">
         {% for key, conta in contas %}
-        <div class="text-teal-700 text-2xl block w-full align-middle py-2">Informações de Conta:</div>
-        <div class="pt-2">
-            <li><strong>Agência: </strong> {{ conta.agencia.codigo }} ({{ conta.agencia|default('--') }})</li>
-            <li><strong>Número da Conta: </strong> {{ conta.numero|default('--') }} </li>
-            <li><strong>Tipo: </strong> {{ conta.tipo.tipo|default('--') }} </li>
-            <li><strong>Data de abertura: </strong> {{ conta.dataAbertura|date("d/m/Y") }} </li>
-            {% if conta.saldo > 0 %}
-            <li><strong>Saldo: </strong><tag class="text-blue-700">R$ {{ conta.saldo|number_format(2, ',', '.') }} </tag></li>
-            {% else %}
-            <li><strong>Saldo: </strong><tag class="text-red-700">R$ {{ conta.saldo|number_format(2, ',', '.') }} 
-            </tag></li>
-            {% endif %}
-        </div>
-        <div>
-            <button class="block w-1/3 shadow-sm border-transparent bg-red-500 hover:bg-red-600 dark:bg-indigo-500 dark:hover:bg-indigo-400 text-white rounded-md border p-2 mt-4 mb-2" onClick="window.location.href = '{{ path('app_excluir_conta', {id:conta.id }) }}'">Excluir Conta</button>
-        </div>
-        <div>
-            <button class="block w-1/3 shadow-sm border-transparent bg-indigo-600 hover:bg-indigo-700 dark:bg-indigo-500 dark:hover:bg-indigo-400 text-white rounded-md border p-2 mt-4 mb-2" onClick="window.location.href = '{{ path('app_listar_agencias') }}'">Voltar para página inicial</button>
-        </div>
+            <div class="mt-5 mb-3 px-2 pt-2 rounded-md bg-gray-200 dark:bg-gray-700">
+                <li><strong>Agência: </strong> {{ conta.agencia.codigo }} ({{ conta.agencia|default('--') }})</li>
+                <li><strong>Número da Conta: </strong> {{ conta.numero|default('--') }} </li>
+                <li><strong>Tipo: </strong> {{ conta.tipo.tipo|default('--') }} </li>
+                <li><strong>Data de abertura: </strong> {{ conta.dataAbertura|date("d/m/Y") }} </li>
+                {% if conta.saldo > 0 %}
+                <li><strong>Saldo: </strong><tag class="text-blue-700">R$ {{ conta.saldo|number_format(2, ',', '.') }} </tag></li>
+                {% else %}
+                <li><strong>Saldo: </strong><tag class="text-red-700">R$ {{ conta.saldo|number_format(2, ',', '.') }} 
+                </tag></li>
+                {% endif %}
+                <div class="pb-1">
+                    {# FALTA IMPLEMENTAR TRANSFERENCIA *** #}
+                    <button class="inline block w-1/3 shadow-sm border-transparent bg-indigo-500 hover:bg-indigo-600 dark:bg-indigo-500 dark:hover:bg-indigo-400 text-white rounded-md border p-2 mt-4 mb-2" onClick="window.location.href = '{{ path('app_excluir_conta', {id:conta.id }) }}'">Transferir</button>
+                    {# FALTA IMPLEMENTAR SAQUE *** #}
+                    <button class="inline block w-1/3 shadow-sm border-transparent bg-indigo-500 hover:bg-indigo-600 dark:bg-indigo-500 dark:hover:bg-indigo-400 text-white rounded-md border p-2 mt-4 mb-2" onClick="window.location.href = '{{ path('app_excluir_conta', {id:conta.id }) }}'">Sacar</button>
+                    {# FALTA IMPLEMENTAR A SOLICITAÇÃO AO GERENTE DA AGENCIA #}
+                    <button class="block w-1/3 shadow-sm border-transparent bg-red-500 hover:bg-red-600 dark:bg-indigo-500 dark:hover:bg-indigo-400 text-white rounded-md border p-2 mt-4 mb-2" onClick="window.location.href = '{{ path('app_excluir_conta', {id:conta.id }) }}'">Solicitar Encerramento de Conta</button>
+                </div>
+            </div>
         {% endfor %}
+        </div>
     {% else %}
-        <br>
-        <h1>Não há conta!</h1>
-        <h2>Retorne para a página inicial <a href= "{{ path('app_listar_agencias') }}">clicando aqui</a></h2>  
+        <div class="p-2 pt-5">
+            <div>Não há conta!</div>
+            <div>Retorne para a página de login clicando <a href= "{{ path('app_login') }}">aqui</a></div>  
+        </div>
     {% endif %}
 </div>
 {% endblock %}

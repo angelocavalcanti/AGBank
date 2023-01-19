@@ -3,6 +3,7 @@
 namespace App\Entity;
 
 use App\Repository\ContaRepository;
+use DateTime;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\DBAL\Types\Types;
@@ -43,6 +44,7 @@ class Conta
     public function __construct()
     {
         $this->transacoes = new ArrayCollection();
+        $this->dataAbertura = new DateTime();
     }
 
     public function __toString()

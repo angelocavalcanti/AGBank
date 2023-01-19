@@ -4,21 +4,20 @@
 
 {% block body %}
 <div>
-
-    <div class="text-teal-700 text-3xl block w-full align-middle">Lista de Gerentes<hr></div>
-    <div class="grid grid-cols-2 sm:grid-cols-2 xl:grid-cols-2 gap-2">
+    <div class="text-teal-700 text-2xl block w-full align-middle py-2">Lista de Gerentes<hr></div>
+    <div class="grid grid-cols-1 sm:grid-cols-2 xl:grid-cols-2 w-2/3 gap-x-6">
     {% for gerente in gerentes %}
-        <div class="mt-5 mb-3 px-2 pt-2 w-2/3 rounded-md bg-gray-200 dark:bg-gray-700">
-        <div><strong>Gerente:</strong> {{gerente.nome}}</div>
-        <div><strong>CPF:</strong> {{ gerente.cpf }}</div>
-        <div><strong>Matrícula:</strong> {{ gerente.matricula }}</div>
+        <div class="mt-5 mb-3 px-2 pt-2 rounded-md bg-gray-200 dark:bg-gray-700">
+        <div><li><strong>Gerente:</strong> {{gerente.nome}}</li></div>
+        <div><li><strong>CPF:</strong> {{ gerente.cpf }}</li></div>
+        <div><li><strong>Matrícula:</strong> {{ gerente.matricula }}</li></div>
         <div class="pt-3 pb-1"><strong>
             Informações da agência:
         </strong></div>
-        <div><strong>Nome:</strong> {{ gerente.agencia.nome }}</div>
-        <div><strong>Código:</strong> {{ gerente.agencia.codigo }}</div>
-        <div><strong>Endereço:</strong> {{ gerente.agencia.endereco }}</div>
-        <div><strong>Telefone:</strong> {{ gerente.agencia.telefone }}</div>
+        <div><li><strong>Nome:</strong> {{ gerente.agencia.nome }}</li></div>
+        <div><li><strong>Código:</strong> {{ gerente.agencia.codigo }}</li></div>
+        <div><li><strong>Endereço:</strong> {{ gerente.agencia.endereco }}</li></div>
+        <div><li><strong>Telefone:</strong> {{ gerente.agencia.telefone }}</li></div>
         <div class="pb-2 w-full"><button class="block w-full shadow-sm border-transparent bg-indigo-600 hover:bg-indigo-700 dark:bg-indigo-500 dark:hover:bg-indigo-400 text-white rounded-md border p-2 mt-4 mb-2" onClick="window.location.href = '{{ path('app_editar_gerente', {id:gerente.id}) }}'">Editar Gerente</button>
         </div></div>
     {% endfor %}

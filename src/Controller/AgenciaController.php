@@ -4,10 +4,14 @@ namespace App\Controller;
 
 use App\Entity\Agencia;
 use App\Entity\Gerente;
+use App\Entity\User;
 use App\Form\AgenciaType;
 use App\Form\GerenteType;
+use App\Form\UserType;
 use App\Repository\AgenciaRepository;
 use App\Repository\GerenteRepository;
+use App\Repository\UserRepository;
+use Sensio\Bundle\FrameworkExtraBundle\Configuration\IsGranted;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
@@ -41,34 +45,35 @@ class AgenciaController extends AbstractController
     }
    
     // CRIAR AGÊNCIA:
-    #[Route('/agencia/criar', name: 'app_criar_agencia', priority:1)]
-    public function criar(AgenciaRepository $agencias, GerenteRepository $gerentes, Request $request): Response
-    {
-        $formAgencia = $this->createForm(AgenciaType::class, new Agencia());
-        $formGerente = $this->createForm(GerenteType::class, new Gerente());
+    // #[Route('/agencia/criar', name: 'app_criar_agencia', priority:1)]
+    // public function criar(AgenciaRepository $agencias, GerenteRepository $gerentes, Request $request): Response
+    // {
+    //     $formAgencia = $this->createForm(AgenciaType::class, new Agencia());
+    //     $formGerente = $this->createForm(GerenteType::class, new Gerente());
 
-        //o formulário foi submetido? 
-        $formAgencia->handleRequest($request);
-        $formGerente->handleRequest($request);
-        //se sim, tratar a submissão
-        if ($formAgencia->isSubmitted() && $formAgencia->isValid() && $formGerente->isSubmitted() && $formGerente->isValid()) {
-            $gerente = $formGerente->getData();
-            $gerentes->save($gerente, true);
-            $agencia = $formAgencia->getData();
-            $agencia->setGerente($gerente); // Associa o gerente criado à Agência a ser criada na linha abaixo
-            $agencias->save($agencia, true);
-            $this->addFlash('success', 'Sucesso! Agência criada com Gerente associado.');
-            return $this->redirectToRoute('app_listar_agencias');
-        }
-        //caso contrário, renderizar o formulário para adicionar Agências
-        return $this->renderForm('agencia/criar_agencia.html.twig', [
-            'formAgencia' => $formAgencia,
-            'formGerente' => $formGerente 
-        ]);
-    }
+    //     //o formulário foi submetido? 
+    //     $formAgencia->handleRequest($request);
+    //     $formGerente->handleRequest($request);
+    //     //se sim, tratar a submissão
+    //     if ($formAgencia->isSubmitted() && $formAgencia->isValid() && $formGerente->isSubmitted() && $formGerente->isValid()) {
+    //         $gerente = $formGerente->getData();
+    //         $gerentes->save($gerente, true);
+    //         $agencia = $formAgencia->getData();
+    //         $agencia->setGerente($gerente); // Associa o gerente criado à Agência a ser criada na linha abaixo
+    //         $agencias->save($agencia, true);
+    //         $this->addFlash('success', 'Sucesso! Agência criada com Gerente associado.');
+    //         return $this->redirectToRoute('app_listar_agencias');
+    //     }
+    //     //caso contrário, renderizar o formulário para adicionar Agências
+    //     return $this->renderForm('agencia/criar_agencia.html.twig', [
+    //         'formAgencia' => $formAgencia,
+    //         'formGerente' => $formGerente 
+    //     ]);
+    // }
    
     // EDITAR DADOS DE AGÊNCIA: 
     #[Route('/agencia{id}/editar', name: 'app_editar_agencia')]
+    #[IsGranted('ROLE_GERENTE', 'ROLE_ADMIN')]
     public function editar($id, Agencia $agencia, Request $request, AgenciaRepository $agencias): Response
     {
         $formAgencia = $this->createForm(AgenciaType::class, $agencia);
@@ -88,6 +93,7 @@ class AgenciaController extends AbstractController
 
      // EXCLUIR AGÊNCIA: 
      #[Route('/agencia{id}/excluir', name: 'app_excluir_agencia')]
+     #[IsGranted('ROLE_GERENTE', 'ROLE_ADMIN')]
      public function excluir($id, Agencia $agencia,  AgenciaRepository $agencias): Response
      {
         $agencias->remove($agencia, true);
@@ -99,4 +105,66 @@ class AgenciaController extends AbstractController
         }
         return $this->redirectToRoute('app_listar_agencias');
      }
+
+
+
+    // =================================================================
+    // CRIAR AGÊNCIA: [2]
+    // TESTANDO COM O FORM USER
+    // ================================================================= 
+    // ========================== ABAIXO ===============================
+    #[Route('/agencia/criar', name: 'app_criar_agencia', priority:1)]
+    #[IsGranted('ROLE_ADMIN')]
+    public function criar(AgenciaRepository $agencias, GerenteRepository $gerentes, Request $request): Response
+    {
+        // VERIFICAR ***
+        // $roles = $this->getUser()->getRoles();
+        // if(!array_search('ROLE_GERENTE', $roles)){
+        //     if(!array_search('ROLE_ADMIN', $roles)){
+        //         $this->addFlash('error', 'Erro! Sem permissão de acesso a esta página!');
+        //         return $this->redirectToRoute('app_login');
+        //     }
+        // }
+        $formAgencia = $this->createForm(AgenciaType::class, new Agencia());
+        $formGerente = $this->createForm(GerenteType::class, new Gerente());
+        // $formUser = $this->createForm(UserType::class, new User());
+
+        //o formulário foi submetido? 
+        $formAgencia->handleRequest($request);
+        $formGerente->handleRequest($request);
+        // $formUser->handleRequest($request);
+
+        // ================================= ***
+        
+            
+       
+        // ================================= ***
+        
+        //se sim, tratar a submissão
+        if ($formAgencia->isSubmitted() && $formAgencia->isValid() && $formGerente->isSubmitted() && $formGerente->isValid()) {
+            // $user = $formUser->getData();
+            $gerente = $formGerente->getData();
+            $gerentes->save($gerente, true);
+            $agencia = $formAgencia->getData();
+            $agencia->setGerente($gerente); // Associa o gerente criado à Agência a ser criada na linha abaixo
+            $agencias->save($agencia, true);
+            // $user->setNome($gerente->getNome());
+            // $user->setCpf($gerente->getCpf());
+            // $user->setRoles(['ROLE_GERENTE']);
+            //$user->setConta(null);
+            // $users->save($user, true);
+            $this->addFlash('success', 'Sucesso! Agência e Usuário Gerente criados.');
+            return $this->redirectToRoute('app_listar_agencias');
+        }
+        //caso contrário, renderizar o formulário para adicionar Agências
+        return $this->renderForm('agencia/criar_agencia.html.twig', [
+            'formAgencia' => $formAgencia,
+            'formGerente' => $formGerente
+        ]);
+    }
+   
+
+    // ===================== ACIMA ====================================
+    // ================================================================
+
 }

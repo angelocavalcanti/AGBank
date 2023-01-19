@@ -9,6 +9,7 @@ use App\Form\DepositoType;
 use App\Repository\AgenciaRepository;
 use App\Repository\ContaRepository;
 use App\Repository\TransacaoRepository;
+use Sensio\Bundle\FrameworkExtraBundle\Configuration\IsGranted;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
@@ -17,32 +18,39 @@ use Symfony\Component\Routing\Annotation\Route;
 class ContaController extends AbstractController
 {
     #[Route('/conta/criar', name: 'app_criar_conta')]
+    #[IsGranted('PUBLIC_ACCESS')]
     public function criar_conta(ContaRepository $contas, Request $request): Response
     {
         $formConta = $this->createForm(ContaType::class, new Conta());
         $formConta->handleRequest($request);
-        if ($formConta->isSubmitted() && $formConta->isValid()) {
+        if(!$this->getUser()){
+            $this->addFlash('error', 'Erro! Faça login para solicitar abertura de Conta.');
+            return $this->redirectToRoute('app_login');
+        }
+        else if ($formConta->isSubmitted() && $formConta->isValid()) {
+            $conta = new Conta();
             $conta = $formConta->getData();
             $conta->setNumero(rand(1000, 10000));
             while ($contas->findOneBy(['numero'=> $conta->getNumero()])){
                 $conta->setNumero(rand(1000, 10000));
             }
             $conta->setSaldo(0);
-            $conta->setDataAbertura(new \DateTime()); // Associa a data de criação do objeto à de abertura da conta
+            $conta->setUser($this->getUser());
             $contas->save($conta, true);
             $agencia = $conta->getAgencia();
             $tipo = $conta->getTipo();
-            $this->addFlash('success', 'Sucesso! Conta criada.');
+            $this->addFlash('success', 'Sucesso! Conta solicitada. Aguarde aprovação.');
             $this->addFlash('success', 'Conta '.$tipo->getTipo().': '.$conta->getNumero().'. Agência: '.$agencia->getCodigo().' ('.$agencia->getNome().')');
             return $this->redirectToRoute('app_listar_contas');
         }
-        // RETORNAR PARA PÁGINA DE LOGIN CASO NÃO ESTEJA LOGADO PARA ABRIR CONTA
+        
         return $this->renderForm('conta/criar_conta.html.twig', [
             'formConta' => $formConta, 
         ]);
     }
 
     #[Route('/conta/depositar', name: 'app_depositar_conta')]
+    #[IsGranted('PUBLIC_ACCESS')]
     public function depositar(ContaRepository $contas, Request $request, TransacaoRepository $transacoes, AgenciaRepository $agencias): Response
     {
         $formDeposito = $this->createForm(DepositoType::class, new Transacao());
@@ -60,7 +68,7 @@ class ContaController extends AbstractController
                             $transacao = new Transacao();
                             $transacao->setDescricao('Depósito público'); 
                             $transacao->setRemetente('Público'); 
-                            $transacao->setData(new \DateTime());
+                             // $transacao->setData(new \DateTime());
                             $transacao->setDestinatario($contaEncontrada);
                             $transacao->setValor($valor);
                             $contaEncontrada->setSaldo($contaEncontrada->getSaldo() + $valor);
@@ -68,7 +76,7 @@ class ContaController extends AbstractController
                             $transacoes->save($transacao, true);
 
                             $this->addFlash('success', 'Sucesso! Valor depositado.');
-                            $this->addFlash('success', 'Depositado R$'.number_format($valor, 2, ',', '.').' na conta '.$contaEncontrada. ' da Agência '.$agenciaEncontrada. ' ('.$agenciaEncontrada->getCodigo().')');
+                            $this->addFlash('success', 'Depositado R$'.number_format($valor, 2, ',', '.').' na Conta '.$contaEncontrada->getTipo().' '.$contaEncontrada. ' da Agência '.$agenciaEncontrada. ' ('.$agenciaEncontrada->getCodigo().')');
                             return $this->redirectToRoute('app_listar_agencias');
                         }
                         else {
@@ -91,12 +99,12 @@ class ContaController extends AbstractController
         ]);
     }
 
-    // LISTAR TODAS AS CONTAS EXISTENTES DE TODAS AS AGÊNCIA:
+    // LISTAR TODAS AS CONTAS DO USUÁRIO LOGADO:
     #[Route('/conta/listar', name: 'app_listar_contas')]
     public function listar(ContaRepository $contas): Response
     {
         return $this->render('conta/listar_contas.html.twig', [
-            'contas' => $contas->findAll(),
+            'contas' => $contas->findBy(['user' => $this->getUser()]),
         ]);
     }
     
@@ -119,7 +127,7 @@ class ContaController extends AbstractController
                                 $transacao = new Transacao();
                                 $transacao->setDescricao('Transferência'); 
                                 $transacao->setRemetente('Usuário'); //user.conta
-                                $transacao->setData(new \DateTime());
+                                // $transacao->setData(new \DateTime());
                                 $transacao->setDestinatario($contaEncontrada);
                                 $transacao->setValor($valor);
                                 //$user.conta->setSaldo($contaEncontrada->getSaldo() - $valor);
