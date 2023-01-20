@@ -21,26 +21,26 @@
         </tr>
         <tr>
             <td colspan="2">
-                {{ form_label(formAgencia.nome, 'Nome:', {'label_attr': {'class': 'block text-sm text-gray-700 dark:text-gray-300 font-medium'}}) }}
+                {{ form_label(formAgencia.nome, 'Nome da Agência:', {'label_attr': {'class': 'block text-sm text-gray-700 dark:text-gray-300 font-medium'}}) }}
                 {{ form_widget(formAgencia.nome, {'attr': {'class': 'block w-full shadow-sm border-gray-300 dark:border-transparent dark:text-gray-800 rounded-md border p-2 mt-1 mb-2', 'placeholder':'Centro'}})}}
                 {{ form_errors(formAgencia.nome) }}
             </td>
         </tr>
         <tr>
             <td>
-                {{ form_label(formAgencia.codigo, 'Código: ', {'label_attr': {'class': 'block text-sm text-gray-700 dark:text-gray-300 font-medium'}}) }}
+                {{ form_label(formAgencia.codigo, 'Código da Agência: ', {'label_attr': {'class': 'block text-sm text-gray-700 dark:text-gray-300 font-medium'}}) }}
                 {{ form_widget(formAgencia.codigo, {'attr': {'class': 'block w-full shadow-sm border-gray-300 dark:border-transparent dark:text-gray-800 rounded-md border p-2 mt-1 mb-2', 'placeholder':'123-4'}}) }}
                 {{ form_errors(formAgencia.codigo) }}
             </td>
             <td>
-                {{ form_label(formAgencia.telefone, 'Telefone: ', {'label_attr': {'class': 'block text-sm text-gray-700 dark:text-gray-300 font-medium'}}) }}
+                {{ form_label(formAgencia.telefone, 'Telefone da Agência: ', {'label_attr': {'class': 'block text-sm text-gray-700 dark:text-gray-300 font-medium'}}) }}
                 {{ form_widget(formAgencia.telefone, {'attr': {'class': 'block w-full shadow-sm border-gray-300 dark:border-transparent dark:text-gray-800 rounded-md border p-2 mt-1 mb-2', 'placeholder':'DDD + Número'}}) }}
                 {{ form_errors(formAgencia.telefone) }}
             </td>
         </tr>
         <tr>
             <td colspan="2">
-                {{ form_label(formAgencia.endereco, 'Endereço: ', {'label_attr': {'class': 'block text-sm text-gray-700 dark:text-gray-300 font-medium'}}) }}
+                {{ form_label(formAgencia.endereco, 'Endereço da Agência: ', {'label_attr': {'class': 'block text-sm text-gray-700 dark:text-gray-300 font-medium'}}) }}
                 {{ form_widget(formAgencia.endereco, {'attr': {'class': 'block w-full shadow-sm border-gray-300 dark:border-transparent dark:text-gray-800 rounded-md border p-2 mt-1 mb-2', 'placeholder':'Rua, n°, bairro, cidade/UF'}}) }}
                 {{ form_errors(formAgencia.endereco) }}
             </td>
@@ -49,10 +49,10 @@
         <br><div><hr></div><br>
         <table class="w-2/3 justify-between items-center">
             <tr>
-                <th colspan="2">Informações do Gerente</th>
+                <th colspan="3">Informações do Gerente</th>
             </tr>
             <tr>
-                <td colspan="2">
+                <td colspan="3">
                     {{ form_label(formGerente.nome, 'Nome do Gerente: ', {'label_attr': {'class': 'block text-sm text-gray-700 dark:text-gray-300 font-medium'}}) }}
                     {{ form_widget(formGerente.nome, {'attr': {'class': 'block w-full shadow-sm border-gray-300 dark:border-transparent dark:text-gray-800 rounded-md border p-2 mt-1 mb-2'}}) }}
                     {{ form_errors(formGerente.nome) }}
@@ -69,7 +69,35 @@
                     {{ form_widget(formGerente.matricula, {'attr': {'class': 'block w-full shadow-sm border-gray-300 dark:border-transparent dark:text-gray-800 rounded-md border p-2 mt-1 mb-2'}}) }}
                     {{ form_errors(formGerente.matricula) }}
                 </td>
+                <td>
+                    {{ form_label(formUser.telefone, 'Telefone do Gerente: ', {'label_attr': {'class': 'block text-sm text-gray-700 dark:text-gray-300 font-medium'}}) }}
+                    {{ form_widget(formUser.telefone, {'attr': {'class': 'block w-full shadow-sm border-gray-300 dark:border-transparent dark:text-gray-800 rounded-md border p-2 mt-1 mb-2'}}) }}
+                    {{ form_errors(formUser.telefone) }}
+                </td>
             </tr>
+            <tr>
+                <td colspan="3">
+                    {{ form_label(formUser.email, 'Email de usuário (Gerente): ', {'label_attr': {'class': 'block text-sm text-gray-700 dark:text-gray-300 font-medium'}}) }}
+                    {{ form_widget(formUser.email, {'attr': {'class': 'block w-full shadow-sm border-gray-300 dark:border-transparent dark:text-gray-800 rounded-md border p-2 mt-1 mb-2'}}) }}
+                    {{ form_errors(formUser.email) }}
+                </td>
+            </tr>
+            <table class="w-2/3 justify-between items-center">
+                <tr>
+                    <td>
+                        {{ form_label(formUser.plainPassword.first, 'Senha', {'label_attr': {'class': 'block text-sm text-gray-700 dark:text-gray-300 font-medium'}}) }}
+                        {{ form_widget(formUser.plainPassword.first, {'attr': {'class': 'block w-full shadow-sm border-gray-300 dark:border-transparent dark:text-gray-800 rounded-md border p-2 mt-1 mb-2'}})}}
+                        {{ form_errors(formUser.plainPassword.first) }}
+                    </td>
+                    <td>
+                        {{ form_label(formUser.plainPassword.second, 'Repita a senha', {'label_attr': {'class': 'block text-sm text-gray-700 dark:text-gray-300 font-medium'}}) }}
+                        {{ form_widget(formUser.plainPassword.second, {'attr': {'class': 'block w-full shadow-sm border-gray-300 dark:border-transparent dark:text-gray-800 rounded-md border p-2 mt-1 mb-2'}})}}
+                        {{ form_errors(formUser.plainPassword.second) }}
+                    </td>
+                </tr>
+            </table>
+           {{ form_row(formUser._token) }}
+           {{ form_row(formGerente._token) }}
         </table> 
     </div>   
     <div>

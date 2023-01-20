@@ -25,7 +25,7 @@ class RegistrationController extends AbstractController
     }
 
     #[Route('/registro', name: 'app_registro')]
-    public function register(Request $request, UserPasswordHasherInterface $userPasswordHasher, EntityManagerInterface $entityManager): Response
+    public function registro(Request $request, UserPasswordHasherInterface $userPasswordHasher, EntityManagerInterface $entityManager): Response
     {
         $user = new User();
         $form = $this->createForm(RegistrationFormType::class, $user);
@@ -78,6 +78,6 @@ class RegistrationController extends AbstractController
         // @TODO Change the redirect on success and handle or remove the flash message in your templates
         $this->addFlash('success', 'Seu endereço de email foi verificado.');
 
-        return $this->redirectToRoute('app_register');
+        return $this->redirectToRoute('app_listar_agencias');
     }
 }

@@ -32,7 +32,8 @@
     </form>
     <div class="mt-2 text-center text-gray-600 dark:text-gray-400">Não tem uma conta? 
         <div>
-            <button class="shadow-sm border-transparent bg-indigo-600 hover:bg-indigo-700 dark:bg-indigo-500 dark:hover:bg-indigo-400 text-white rounded-md border p-2 mt-4 mb-2" onClick="window.location.href = '{{ path('app_listar_agencias') }}'">Registre-se aqui</button>
+            <a class="text-teal-600" href="{{ path('app_registro') }}">Registre-se aqui</a>
+            {# <button class="shadow-sm border-transparent bg-indigo-600 hover:bg-indigo-700 dark:bg-indigo-500 dark:hover:bg-indigo-400 text-white rounded-md border p-2 mt-4 mb-2" onClick="window.location.href = '{{ path('app_listar_agencias') }}'">Registre-se aqui</button> #}
         </div>
     </div>
 </div>

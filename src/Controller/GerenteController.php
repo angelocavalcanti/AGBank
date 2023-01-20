@@ -3,8 +3,10 @@
 namespace App\Controller;
 
 use App\Entity\Gerente;
+use App\Entity\User;
 use App\Form\GerenteType;
 use App\Repository\GerenteRepository;
+use App\Repository\UserRepository;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\IsGranted;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
@@ -25,12 +27,16 @@ class GerenteController extends AbstractController
 
     #[Route('/gerente{id}/editar', name: 'app_editar_gerente')]
     #[IsGranted('IS_AUTHENTICATED_FULLY')]
-    public function editar($id, Gerente $gerente, Request $request, GerenteRepository $gerentes): Response
+    public function editar($id, Gerente $gerente, Request $request, GerenteRepository $gerentes, UserRepository $users): Response
     {
         $formGerente = $this->createForm(GerenteType::class, $gerente);
         $formGerente->handleRequest($request);
         if ($formGerente->isSubmitted() && $formGerente->isValid()) {
             $gerente = $formGerente->getData();
+            $userGerente = $gerente->getUser();
+            $userGerente->setCpf($gerente->getCpf());
+            $userGerente->setNome($gerente->getNome());
+            $users->save($userGerente, true);
             $gerentes->save($gerente, true);
             $this->addFlash('success', 'Os dados do Gerente foram atualizados!');
             return $this->redirectToRoute('app_listar_gerentes');

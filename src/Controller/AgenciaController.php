@@ -7,6 +7,7 @@ use App\Entity\Gerente;
 use App\Entity\User;
 use App\Form\AgenciaType;
 use App\Form\GerenteType;
+use App\Form\RegistrationFormType;
 use App\Form\UserType;
 use App\Repository\AgenciaRepository;
 use App\Repository\GerenteRepository;
@@ -15,6 +16,7 @@ use Sensio\Bundle\FrameworkExtraBundle\Configuration\IsGranted;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
+use Symfony\Component\PasswordHasher\Hasher\UserPasswordHasherInterface;
 use Symfony\Component\Routing\Annotation\Route;
 
 class AgenciaController extends AbstractController
@@ -115,7 +117,7 @@ class AgenciaController extends AbstractController
     // ========================== ABAIXO ===============================
     #[Route('/agencia/criar', name: 'app_criar_agencia', priority:1)]
     #[IsGranted('ROLE_ADMIN')]
-    public function criar(AgenciaRepository $agencias, GerenteRepository $gerentes, Request $request): Response
+    public function criar(AgenciaRepository $agencias, GerenteRepository $gerentes, UserRepository $users, Request $request, UserPasswordHasherInterface $userPasswordHasher): Response
     {
         // VERIFICAR ***
         // $roles = $this->getUser()->getRoles();
@@ -127,39 +129,36 @@ class AgenciaController extends AbstractController
         // }
         $formAgencia = $this->createForm(AgenciaType::class, new Agencia());
         $formGerente = $this->createForm(GerenteType::class, new Gerente());
-        // $formUser = $this->createForm(UserType::class, new User());
+        $formUser = $this->createForm(RegistrationFormType::class, new User());
 
         //o formulário foi submetido? 
         $formAgencia->handleRequest($request);
         $formGerente->handleRequest($request);
-        // $formUser->handleRequest($request);
-
-        // ================================= ***
-        
-            
-       
-        // ================================= ***
+        $formUser->handleRequest($request);
         
         //se sim, tratar a submissão
-        if ($formAgencia->isSubmitted() && $formAgencia->isValid() && $formGerente->isSubmitted() && $formGerente->isValid()) {
-            // $user = $formUser->getData();
+        if ($formAgencia->isSubmitted() && $formAgencia->isValid() && $formGerente->isSubmitted() && $formGerente->isValid() && $formUser->isSubmitted() && $formUser->isValid()) {
+            $user = $formUser->getData();
             $gerente = $formGerente->getData();
-            $gerentes->save($gerente, true);
             $agencia = $formAgencia->getData();
-            $agencia->setGerente($gerente); // Associa o gerente criado à Agência a ser criada na linha abaixo
+            $agencia->setGerente($gerente); // Associa o gerente criado à Agência criada
+            $user->setNome($gerente->getNome());
+            $user->setCpf($gerente->getCpf());
+            $user->setRoles(['ROLE_GERENTE']);
+            $user->setPassword($userPasswordHasher->hashPassword($user,$formUser->get('plainPassword')->getData()));
+            $user->setIsVerified(true); // opcional
+            $users->save($user, true);
+            $gerente->setUser($user);
+            $gerentes->save($gerente, true);
             $agencias->save($agencia, true);
-            // $user->setNome($gerente->getNome());
-            // $user->setCpf($gerente->getCpf());
-            // $user->setRoles(['ROLE_GERENTE']);
-            //$user->setConta(null);
-            // $users->save($user, true);
             $this->addFlash('success', 'Sucesso! Agência e Usuário Gerente criados.');
             return $this->redirectToRoute('app_listar_agencias');
         }
         //caso contrário, renderizar o formulário para adicionar Agências
         return $this->renderForm('agencia/criar_agencia.html.twig', [
             'formAgencia' => $formAgencia,
-            'formGerente' => $formGerente
+            'formGerente' => $formGerente,
+            'formUser' => $formUser
         ]);
     }
    
