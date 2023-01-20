@@ -28,4 +28,18 @@ class LoginController extends AbstractController
     {
 
     }
+
+    #[Route('/perfil', name: 'app_perfil')]
+    #[IsGranted('ROLE_USER')]
+    public function perfil()
+    {
+        $user = $this->getUser();
+        if(!$user){
+            $this->addFlash('error', 'Erro! Usuário não está identificado. Faça login.');
+            return $this->render('login/index.html.twig');
+        }
+        return $this->render('user/perfil.html.twig', [
+            'usuario' => $user
+        ]);
+    }
 }

@@ -24,7 +24,7 @@ class ContaController extends AbstractController
         $formConta = $this->createForm(ContaType::class, new Conta());
         $formConta->handleRequest($request);
         if(!$this->getUser()){
-            $this->addFlash('error', 'Erro! Faça login para solicitar abertura de Conta.');
+            $this->addFlash('success', 'Faça login ou registre-se para solicitar abertura de Conta.');
             return $this->redirectToRoute('app_login');
         }
         else if ($formConta->isSubmitted() && $formConta->isValid()) {
@@ -164,7 +164,7 @@ class ContaController extends AbstractController
             'contas' => $contas
         ]);
         
-        //  FALTA ALTERAR E AJUSTAR AINDA ACIMA ***
+        //  FALTA ALTERAR E AJUSTAR AINDA ACIMA. VERIFICAR ***
         // =========================================================
     }    
 
@@ -172,13 +172,14 @@ class ContaController extends AbstractController
     #[Route('/conta{id}/excluir', name: 'app_excluir_conta')]
     public function excluir($id, Conta $conta, ContaRepository $contas): Response
     {
-    $contas->remove($conta, true);
-    if(!$contas->findOneBy(['id' => $id])){
-        $this->addFlash('success', 'Sucesso! Conta removida.');    
-    }     
-    else{
-        $this->addFlash('error', 'Erro! Conta não removida, tente novamente.');
-    }
-    return $this->redirectToRoute('app_listar_contas');
+        
+        if($contas->findOneBy(['id' => $id])){
+            $contas->remove($conta, true);
+            $this->addFlash('success', 'Sucesso! Conta removida.');    
+        }     
+        else{
+            $this->addFlash('error', 'Erro! Conta não removida, tente novamente.');
+        }
+        return $this->redirectToRoute('app_listar_contas');
     }
 }

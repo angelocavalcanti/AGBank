@@ -55,6 +55,7 @@ class RegistrationFormType extends AbstractType
                 ],
             ])
             ->add('nome')
+            ->add('cpf')
             ->add('telefone', null, [
                 'mapped' => 'true'
             ])

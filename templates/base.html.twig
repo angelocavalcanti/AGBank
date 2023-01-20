@@ -39,10 +39,9 @@
                     <div class="ml-2 mr-2">
                         <a href="{{ path('app_depositar_conta') }}">Efetuar Depósito</a>
                     </div> |
-                    {% if is_granted('ROLE_ADMIN') %}
+                    {% if is_granted('ROLE_USER') %}
                     <div class="ml-2 mr-2">
-                        {# <a href="{{ path('app_settings_profile') }}">Profile Settings</a> #}
-                        <a href="{{ path('app_login') }}">Meu Perfil</a>
+                        <a href="{{ path('app_perfil') }}">Meu Perfil</a>
                     </div> |
                     {% endif %}
                     <div class="ml-2 mr-2">

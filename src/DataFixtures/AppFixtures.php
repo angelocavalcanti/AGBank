@@ -60,6 +60,7 @@ class AppFixtures extends Fixture
         $user->setPassword($this->hasher->hashPassword($user, '123'));
         $user->setTelefone('87988117733');
         $user->setRoles(['ROLE_ADMIN']);
+        $user->setIsVerified(true);
         $manager->persist($user);
         
         $manager->flush();
@@ -87,6 +88,7 @@ class AppFixtures extends Fixture
             $userGerente->setTelefone('87988117'.$i);
             $userGerente->setGerente($gerente);
             $userGerente->setRoles(['ROLE_GERENTE']);
+            $userGerente->setIsVerified(true);
             $manager->persist($userGerente);
 
             $user = new User();
@@ -96,6 +98,7 @@ class AppFixtures extends Fixture
             $user->setPassword($this->hasher->hashPassword($user, '123'));
             $user->setTelefone('8799911070'.$i);
             $user->setRoles(['ROLE_USER']);
+            $userGerente->setIsVerified(true);
             $manager->persist($user);
 
             $conta = new Conta();
