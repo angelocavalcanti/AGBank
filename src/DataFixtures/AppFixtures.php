@@ -107,6 +107,7 @@ class AppFixtures extends Fixture
         $transacao->setRemetente($conta2);
         $transacao->setValor(200);
         $transacao->setDescricao('Transferência');
+        $transacao->setResponsavel('Cliente');
         $manager->persist($transacao);
 
         $manager->flush();

@@ -37,6 +37,9 @@ class Transacao
     #[ORM\Column(length: 255)]
     private ?string $descricao = null;
 
+    #[ORM\Column(length: 255)]
+    private ?string $responsavel = null;
+
     public function getId(): ?int
     {
         return $this->id;
@@ -98,6 +101,18 @@ class Transacao
     public function setDescricao(string $descricao): self
     {
         $this->descricao = $descricao;
+
+        return $this;
+    }
+
+    public function getResponsavel(): ?string
+    {
+        return $this->responsavel;
+    }
+
+    public function setResponsavel(string $responsavel): self
+    {
+        $this->responsavel = $responsavel;
 
         return $this;
     }
