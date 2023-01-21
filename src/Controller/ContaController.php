@@ -79,10 +79,11 @@ class ContaController extends AbstractController
                     if($contaDestinatario->getAgencia() == $agenciaDestinatario){
                         if($valor > 0 && is_numeric($valor)){  
                             $transacao = new Transacao();
-                            $transacao->setDescricao('Depósito público'); 
+                            $transacao->setDescricao('Depósito'); 
                             $transacao->setRemetente(null);//Não há objeto Conta para público 
                             $transacao->setDestinatario($contaDestinatario);
                             $transacao->setValor($valor);
+                            // $transacao->setResponsavel('Público Geral'); // VERIFICAR ***
                             $contaDestinatario->creditar($valor);
                             $contas->save($contaDestinatario, true);
                             $transacoes->save($transacao, true);
@@ -115,6 +116,13 @@ class ContaController extends AbstractController
     #[Route('/conta/listar', name: 'app_listar_contas')]
     public function listar(ContaRepository $contas): Response
     {
+        if($this->getUser()){
+            $roles = $this->getUser()->getRoles();
+            if(in_array('ROLE_ADMIN', $roles)){
+                $this->addFlash('error', 'Usuário ADMIN não possui contas.');
+                return $this->redirectToRoute('app_login');
+            }
+        }
         return $this->render('conta/listar_contas.html.twig', [
             'contas' => $contas->findBy(['user' => $this->getUser()]),
         ]);

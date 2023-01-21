@@ -27,30 +27,30 @@
                 </tag></li>
                 {% endif %}
                 <div class="grid grid-cols-1 sm:grid-cols-2 xl:grid-cols-3 w-full gap-x-3 p-2 pb-0">
-                    <button class="inline block shadow-sm border-transparent bg-indigo-500 hover:bg-indigo-600 dark:bg-indigo-500 dark:hover:bg-indigo-400 text-white rounded-md border p-1 mt-4 mb-2" onClick="window.location.href = '{{ path('app_transferir_conta', {id:conta.id }) }}'">Transferir</button>
-                    <button class="inline block shadow-sm border-transparent bg-indigo-500 hover:bg-indigo-600 dark:bg-indigo-500 dark:hover:bg-indigo-400 text-white rounded-md border p-1 mt-4 mb-2" onClick="window.location.href = '{{ path('app_debitar_conta', {id:conta.id }) }}'">Debitar</button>
-                    <button class="inline block shadow-sm border-transparent bg-indigo-500 hover:bg-indigo-600 dark:bg-indigo-500 dark:hover:bg-indigo-400 text-white rounded-md border p-1 mt-4 mb-2" onClick="window.location.href = '{{ path('app_creditar_conta', {id:conta.id }) }}'">Creditar</button>
+                    <button {% if not conta.aprovada %} disabled title="Não permitido. Conta não aprovada" class="inline block shadow-sm border-transparent bg-gray-500 hover:bg-gray-600 dark:bg-gray-500 dark:hover:bg-gray-400 text-white rounded-md border p-1 mt-4 mb-2" {% else %} class="inline block shadow-sm border-transparent bg-indigo-500 hover:bg-indigo-600 dark:bg-indigo-500 dark:hover:bg-indigo-400 text-white rounded-md border p-1 mt-4 mb-2" onClick="window.location.href = '{{ path('app_transferir_conta', {id:conta.id }) }}'"{% endif %}>Transferir</button>
+                    <button  {% if not conta.aprovada %} disabled title="Não permitido. Conta não aprovada" class="inline block shadow-sm border-transparent bg-gray-500 hover:bg-gray-600 dark:bg-gray-500 dark:hover:bg-gray-400 text-white rounded-md border p-1 mt-4 mb-2" {% else %} class="inline block shadow-sm border-transparent bg-indigo-500 hover:bg-indigo-600 dark:bg-indigo-500 dark:hover:bg-indigo-400 text-white rounded-md border p-1 mt-4 mb-2" onClick="window.location.href = '{{ path('app_debitar_conta', {id:conta.id }) }}'"{% endif %}>Debitar</button>
+                    <button  {% if not conta.aprovada %} disabled title="Não permitido. Conta não aprovada" class="inline block shadow-sm border-transparent bg-gray-500 hover:bg-gray-600 dark:bg-gray-500 dark:hover:bg-gray-400 text-white rounded-md border p-1 mt-4 mb-2" {% else %} class="inline block shadow-sm border-transparent bg-indigo-500 hover:bg-indigo-600 dark:bg-indigo-500 dark:hover:bg-indigo-400 text-white rounded-md border p-1 mt-4 mb-2" onClick="window.location.href = '{{ path('app_creditar_conta', {id:conta.id }) }}'"{% endif %}>Creditar</button>
                 </div>
                 <div class="grid grid-cols-1 sm:grid-cols-1 xl:grid-cols-1 w-full gap-x-3 pt-1 p-2 pb-0">
                       {# FALTA IMPLEMENTAR A SOLICITAÇÃO DE EXCLUSÃO DE CONTA AO GERENTE DA AGENCIA. VERIFICAR *** #}
-                      <button class="block w-full shadow-sm border-transparent bg-indigo-500 hover:bg-indigo-600 dark:bg-indigo-500 dark:hover:bg-indigo-400 text-white rounded-md border p-1 mt-4 mb-2" onClick="window.location.href = '{{ path('app_listar_contas', {id:conta.id }) }}'">Ver histórico de transações</button>
+                      <button {% if not conta.aprovada %} disabled title="Não permitido. Conta não aprovada"  class="block w-full shadow-sm border-transparent bg-gray-500 hover:bg-gray-600 dark:bg-gray-500 dark:hover:bg-gray-400 text-white rounded-md border p-1 mt-4 mb-2" {% else %} class="block w-full shadow-sm border-transparent bg-indigo-500 hover:bg-indigo-600 dark:bg-indigo-500 dark:hover:bg-indigo-400 text-white rounded-md border p-1 mt-4 mb-2" onClick="window.location.href = '{{ path('app_listar_contas', {id:conta.id }) }}'"{% endif %}>Ver histórico de transações</button>
                       <button class="block w-full shadow-sm border-transparent bg-red-500 hover:bg-red-600 dark:bg-indigo-500 dark:hover:bg-indigo-400 text-white rounded-md border p-1 mt-4 mb-2" onClick="window.location.href = '{{ path('app_excluir_conta', {id:conta.id }) }}'">Solicitar Encerramento de Conta</button>
                 </div>
             </div>
         {% endfor %}
         </div>
     {% else %}
-         {% if app.user and not is_granted('ROLE_ADMIN') %}
-            <div class="p-2 pt-5">
-                <div>Não há conta!</div>
-                <div>Retorne para a página inicial <a class="text-teal-600" href= "{{ path('app_listar_agencias') }}">clicando aqui</a></div>  
+        <div class="p-2 pt-5">
+            <div>Não há conta para ser exibida!</div>
+            <div>Retorne à página inicial 
+                <a class="text-teal-600" href= "{{ path('app_listar_agencias') }}">clicando aqui</a>
             </div>
-        {% else %}
-            <div class="p-2 pt-5">
-                <div>Usuário ADMIN não possui conta</div>
-                <div>Retorne para a página inicial <a class="text-teal-600" href= "{{ path('app_listar_agencias') }}">clicando aqui</a></div>  
+            {% if app.user and not is_granted('ROLE_ADMIN') %}
+                <div>Ou solicite a abertura de uma conta 
+                    <a class="text-teal-600" href= "{{ path('app_criar_conta') }}">clicando aqui</a>
+                </div>
+            {% endif %}  
             </div>
-        {% endif %}
     {% endif %}
 </div>
 {% endblock %}
