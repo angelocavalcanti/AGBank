@@ -87,6 +87,7 @@ class AppFixtures extends Fixture
             $conta->setAgencia($agencia);
             $conta->setTipo($tipoConta);
             $conta->setUser($user);
+            $conta->setAprovada(true);
             $manager->persist($conta);
 
             $manager->flush();
@@ -98,6 +99,7 @@ class AppFixtures extends Fixture
         $conta2->setAgencia($agencia);
         $conta2->setTipo($tipoConta);
         $conta2->setUser($user);
+        $conta2->setAprovada(true);
         $manager->persist($conta2);
 
         $transacao = new Transacao();
