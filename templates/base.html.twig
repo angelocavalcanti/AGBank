@@ -34,15 +34,21 @@
             </div>
             <div class="">
                 <div class="text-base text-teal-50 dark:text-gray-400 flex">
-                    {# VERIFICAÇÃO SE USUÁRIO ESTÁ AUTENTICADO NO SISTEMA: #}
+                    {% if app.request.pathinfo != '/' and app.request.pathinfo != '/login' %}
+                        <div class="ml-2 mr-2">
+                            <a href="{{ path('app_listar_agencias') }}">Início</a>
+                        </div> |
+                    {% endif %}
                     {% if is_granted('ROLE_ADMIN') %}  
                     <div class="ml-2 mr-2">
                         <a href="{{ path('app_criar_agencia') }}">Criar Agência</a>
                     </div> |
                     {% endif %}
+                    {% if not is_granted('ROLE_ADMIN') %}
                     <div class="ml-2 mr-2">
                         <a href="{{ path('app_depositar_conta') }}">Efetuar Depósito</a>
                     </div> |
+                    {% endif %}
                     {% if is_granted('ROLE_USER') %}
                     <div class="ml-2 mr-2">
                         <a href="{{ path('app_perfil') }}">Meu Perfil</a>
@@ -53,6 +59,7 @@
                         <a href="{{ path('app_listar_gerentes') }}">Ver gerentes</a>
                     </div> |
                     {% endif %}
+                    {% if not is_granted('ROLE_ADMIN') %}
                     <div class="ml-2 mr-2">
                         <a href="{{ path('app_criar_conta') }}">Abrir Conta</a>
                     </div> |
@@ -60,6 +67,7 @@
                         <div class="ml-2 mr-2">
                             <a href="{{ path('app_listar_contas') }}">Minhas Contas</a>
                         </div> |
+                    {% endif %}
                     {% endif %}
                 </div>
             </div>

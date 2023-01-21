@@ -40,10 +40,17 @@
         {% endfor %}
         </div>
     {% else %}
-        <div class="p-2 pt-5">
-            <div>Não há conta!</div>
-            <div>Retorne para a página inicial <a class="text-teal-600" href= "{{ path('app_listar_agencias') }}">clicando aqui</a></div>  
-        </div>
+         {% if app.user and not is_granted('ROLE_ADMIN') %}
+            <div class="p-2 pt-5">
+                <div>Não há conta!</div>
+                <div>Retorne para a página inicial <a class="text-teal-600" href= "{{ path('app_listar_agencias') }}">clicando aqui</a></div>  
+            </div>
+        {% else %}
+            <div class="p-2 pt-5">
+                <div>Usuário ADMIN não possui conta</div>
+                <div>Retorne para a página inicial <a class="text-teal-600" href= "{{ path('app_listar_agencias') }}">clicando aqui</a></div>  
+            </div>
+        {% endif %}
     {% endif %}
 </div>
 {% endblock %}

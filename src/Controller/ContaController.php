@@ -22,6 +22,11 @@ class ContaController extends AbstractController
     #[IsGranted('PUBLIC_ACCESS')]
     public function criar_conta(ContaRepository $contas, Request $request): Response
     {
+        $roles = $this->getUser()->getRoles();
+        if(in_array('ROLE_ADMIN', $roles)){
+            $this->addFlash('error', 'Usuário ADMIN não pode abrir conta.');
+            return $this->redirectToRoute('app_login');
+        }
         $formConta = $this->createForm(ContaType::class, new Conta());
         $formConta->handleRequest($request);
         if(!$this->getUser()){
@@ -56,6 +61,11 @@ class ContaController extends AbstractController
     #[IsGranted('PUBLIC_ACCESS')]
     public function depositoPublico(ContaRepository $contas, Request $request, TransacaoRepository $transacoes, AgenciaRepository $agencias): Response
     {
+        $roles = $this->getUser()->getRoles();
+        if(in_array('ROLE_ADMIN', $roles)){
+            $this->addFlash('error', 'Usuário ADMIN não pode efetuar transações.');
+            return $this->redirectToRoute('app_login');
+        }
         $formDeposito = $this->createForm(DepositoType::class, new Transacao());
         $formDeposito->handleRequest($request);
         if ($formDeposito->isSubmitted() && $formDeposito->isValid()) {
@@ -114,6 +124,11 @@ class ContaController extends AbstractController
     #[Route('/conta{id}/transferir', name: 'app_transferir_conta')]
     public function transferencia($id, ContaRepository $contas, AgenciaRepository $agencias, TransacaoRepository $transacoes, Request $request): Response
     {
+        $roles = $this->getUser()->getRoles();
+        if(in_array('ROLE_ADMIN', $roles)){
+            $this->addFlash('error', 'Usuário ADMIN não pode efetuar transações.');
+            return $this->redirectToRoute('app_login');
+        }
         $user = $this->getUser();
         $contaRemetente = $contas->findOneBy(['user' => $user, 'id' => $id]);
         $formTransferir = $this->createForm(DepositoType::class, new Transacao());
@@ -176,6 +191,11 @@ class ContaController extends AbstractController
     #[Route('/conta{id}/creditar', name: 'app_creditar_conta')]
     public function credito($id, ContaRepository $contas, TransacaoRepository $transacoes, Request $request): Response
     {
+        $roles = $this->getUser()->getRoles();
+        if(in_array('ROLE_ADMIN', $roles)){
+            $this->addFlash('error', 'Usuário ADMIN não pode efetuar transações.');
+            return $this->redirectToRoute('app_login');
+        }
         $user = $this->getUser();
         $contaRemetente = $contas->findOneBy(['user' => $user, 'id' => $id]);
         $formCreditar = $this->createForm(DepositoType::class, new Transacao());
@@ -208,6 +228,11 @@ class ContaController extends AbstractController
     #[Route('/conta{id}/debitar', name: 'app_debitar_conta')]
     public function debito($id, ContaRepository $contas, TransacaoRepository $transacoes, Request $request): Response
     {
+        $roles = $this->getUser()->getRoles();
+        if(in_array('ROLE_ADMIN', $roles)){
+            $this->addFlash('error', 'Usuário ADMIN não pode efetuar transações.');
+            return $this->redirectToRoute('app_login');
+        }
         $user = $this->getUser();
         $contaRemetente = $contas->findOneBy(['user' => $user, 'id' => $id]);
         $formDebitar = $this->createForm(DepositoType::class, new Transacao());
@@ -245,6 +270,11 @@ class ContaController extends AbstractController
     #[IsGranted('ROLE_GERENTE')]
     public function excluir($id, Conta $conta, ContaRepository $contas): Response
     {
+        $roles = $this->getUser()->getRoles();
+        if(in_array('ROLE_ADMIN', $roles)){
+            $this->addFlash('error', 'Usuário ADMIN não pode efetuar transações.');
+            return $this->redirectToRoute('app_login');
+        }
         // $roles = $this->getUser().roles;
         // if($roles[] == 'ROLE_GERENTE' ){ // VERIFICAR SE É O GERENTE DA AGÊNCIA DA CONTA ***
 
