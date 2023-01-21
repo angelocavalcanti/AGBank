@@ -37,6 +37,7 @@ class ContaController extends AbstractController
             }
             $conta->setSaldo(0);
             $conta->setUser($this->getUser());
+            $conta->setAprovada(false);
             $contas->save($conta, true);
             $agencia = $conta->getAgencia();
             $tipo = $conta->getTipo();

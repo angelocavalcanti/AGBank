@@ -13,6 +13,13 @@
                 <li><strong>Número da Conta: </strong> {{ conta.numero|default('--') }} </li>
                 <li><strong>Tipo: </strong> {{ conta.tipo.tipo|default('--') }} </li>
                 <li><strong>Data de abertura: </strong> {{ conta.dataAbertura|date("d/m/Y") }} </li>
+                <li><strong>Aprovada: </strong> 
+                {% if conta.aprovada %} 
+                Sim 
+                {% else %}
+                Não
+                {% endif %}
+                </li>
                 {% if conta.saldo > 0 %}
                 <li><strong>Saldo: </strong><tag class="text-blue-700">R$ {{ conta.saldo|number_format(2, ',', '.') }} </tag></li>
                 {% else %}
@@ -20,14 +27,14 @@
                 </tag></li>
                 {% endif %}
                 <div class="grid grid-cols-1 sm:grid-cols-2 xl:grid-cols-3 w-full gap-x-3 p-2 pb-0">
-                    <button class="inline block shadow-sm border-transparent bg-indigo-500 hover:bg-indigo-600 dark:bg-indigo-500 dark:hover:bg-indigo-400 text-white rounded-md border p-2 mt-4 mb-2" onClick="window.location.href = '{{ path('app_transferir_conta', {id:conta.id }) }}'">Transferir</button>
-                    <button class="inline block shadow-sm border-transparent bg-indigo-500 hover:bg-indigo-600 dark:bg-indigo-500 dark:hover:bg-indigo-400 text-white rounded-md border p-2 mt-4 mb-2" onClick="window.location.href = '{{ path('app_debitar_conta', {id:conta.id }) }}'">Debitar</button>
-                    <button class="inline block shadow-sm border-transparent bg-indigo-500 hover:bg-indigo-600 dark:bg-indigo-500 dark:hover:bg-indigo-400 text-white rounded-md border p-2 mt-4 mb-2" onClick="window.location.href = '{{ path('app_creditar_conta', {id:conta.id }) }}'">Creditar</button>
+                    <button class="inline block shadow-sm border-transparent bg-indigo-500 hover:bg-indigo-600 dark:bg-indigo-500 dark:hover:bg-indigo-400 text-white rounded-md border p-1 mt-4 mb-2" onClick="window.location.href = '{{ path('app_transferir_conta', {id:conta.id }) }}'">Transferir</button>
+                    <button class="inline block shadow-sm border-transparent bg-indigo-500 hover:bg-indigo-600 dark:bg-indigo-500 dark:hover:bg-indigo-400 text-white rounded-md border p-1 mt-4 mb-2" onClick="window.location.href = '{{ path('app_debitar_conta', {id:conta.id }) }}'">Debitar</button>
+                    <button class="inline block shadow-sm border-transparent bg-indigo-500 hover:bg-indigo-600 dark:bg-indigo-500 dark:hover:bg-indigo-400 text-white rounded-md border p-1 mt-4 mb-2" onClick="window.location.href = '{{ path('app_creditar_conta', {id:conta.id }) }}'">Creditar</button>
                 </div>
-                <div class="grid grid-cols-1 sm:grid-cols-1 xl:grid-cols-2 w-full gap-x-3 p-2 pb-0">
+                <div class="grid grid-cols-1 sm:grid-cols-1 xl:grid-cols-1 w-full gap-x-3 pt-1 p-2 pb-0">
                       {# FALTA IMPLEMENTAR A SOLICITAÇÃO DE EXCLUSÃO DE CONTA AO GERENTE DA AGENCIA. VERIFICAR *** #}
-                      <button class="block w-full shadow-sm border-transparent bg-red-500 hover:bg-red-600 dark:bg-indigo-500 dark:hover:bg-indigo-400 text-white rounded-md border p-2 mt-4 mb-2" onClick="window.location.href = '{{ path('app_excluir_conta', {id:conta.id }) }}'">Solicitar Encerramento de Conta</button>
-                      <button class="block w-full shadow-sm border-transparent bg-indigo-500 hover:bg-indigo-600 dark:bg-indigo-500 dark:hover:bg-indigo-400 text-white rounded-md border p-2 mt-4 mb-2" onClick="window.location.href = '{{ path('app_listar_contas', {id:conta.id }) }}'">Ver histórico de transações</button>
+                      <button class="block w-full shadow-sm border-transparent bg-indigo-500 hover:bg-indigo-600 dark:bg-indigo-500 dark:hover:bg-indigo-400 text-white rounded-md border p-1 mt-4 mb-2" onClick="window.location.href = '{{ path('app_listar_contas', {id:conta.id }) }}'">Ver histórico de transações</button>
+                      <button class="block w-full shadow-sm border-transparent bg-red-500 hover:bg-red-600 dark:bg-indigo-500 dark:hover:bg-indigo-400 text-white rounded-md border p-1 mt-4 mb-2" onClick="window.location.href = '{{ path('app_excluir_conta', {id:conta.id }) }}'">Solicitar Encerramento de Conta</button>
                 </div>
             </div>
         {% endfor %}

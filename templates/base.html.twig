@@ -22,9 +22,13 @@
                         <strong>{{ app.user }} </strong>
                         <button class="shadow-sm border-transparent bg-slate-500 hover:bg-slate-600 dark:bg-slate-500 dark:hover:bg-islate-400 text-white rounded-md border px-1" onClick="window.location.href = '{{ path('app_logout') }}'"> Sair </button>
                     </div>
-                {% else %}
+                {% elseif app.request.pathinfo != '/login' %}
                     <div class="ml-2 mr-2">
                         <a href="{{ path('app_login') }}">Fazer login</a>
+                    </div>
+                {% else %}
+                    <div class="ml-2 mr-2">
+                        <a href="{{ path('app_listar_agencias') }}">Início</a>
                     </div>
                 {% endif %}
             </div>
@@ -44,9 +48,11 @@
                         <a href="{{ path('app_perfil') }}">Meu Perfil</a>
                     </div> |
                     {% endif %}
+                    {% if is_granted('ROLE_ADMIN') %}
                     <div class="ml-2 mr-2">
                         <a href="{{ path('app_listar_gerentes') }}">Ver gerentes</a>
                     </div> |
+                    {% endif %}
                     <div class="ml-2 mr-2">
                         <a href="{{ path('app_criar_conta') }}">Abrir Conta</a>
                     </div> |
