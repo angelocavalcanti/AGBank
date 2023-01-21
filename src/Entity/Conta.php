@@ -41,6 +41,9 @@ class Conta
     #[ORM\JoinColumn(nullable: false)]
     private ?User $user = null;
 
+    #[ORM\Column]
+    private ?bool $aprovada = null;
+
     public function __construct()
     {
         $this->transacoes = new ArrayCollection();
@@ -177,6 +180,18 @@ class Conta
     { 
         $this->saldo = $this->saldo - $valor;
         $destinatario->creditar($valor);
+
+        return $this;
+    }
+
+    public function isAprovada(): ?bool
+    {
+        return $this->aprovada;
+    }
+
+    public function setAprovada(bool $aprovada): self
+    {
+        $this->aprovada = $aprovada;
 
         return $this;
     }
