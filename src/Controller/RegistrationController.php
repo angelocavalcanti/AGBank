@@ -80,4 +80,41 @@ class RegistrationController extends AbstractController
 
         return $this->redirectToRoute('app_listar_agencias');
     }
+
+    #[Route('/registro{id}/editar', name: 'app_editar_registro')]
+    public function editar_registro(Request $request, UserPasswordHasherInterface $userPasswordHasher, EntityManagerInterface $entityManager): Response
+    {
+        $user = $this->getUser();
+        $form = $this->createForm(RegistrationFormType::class, $user); // FALTA VERIFICAR ***
+        $form->handleRequest($request);
+
+        if ($form->isSubmitted() && $form->isValid()) {
+            // encode the plain password
+            $user->setPassword(
+                $userPasswordHasher->hashPassword(
+                    $user,
+                    $form->get('plainPassword')->getData()
+                )
+            );
+            $user->setRoles(['ROLE_USER']);
+            $entityManager->persist($user);
+            $entityManager->flush();
+
+            // generate a signed url and email it to the user
+            $this->emailVerifier->sendEmailConfirmation('app_verify_email', $user,
+                (new TemplatedEmail())
+                    ->from(new Address('mailer@agbank.com', 'AGBank'))
+                    ->to($user->getEmail())
+                    ->subject('Por favor confirme seu Email')
+                    ->htmlTemplate('registration/confirmation_email.html.twig')
+            );
+            // do anything else you need here, like send an email
+            $this->addFlash('success', 'Sucesso! Registro concluído.');
+            return $this->redirectToRoute('app_login');
+        }
+
+        return $this->render('registration/register.html.twig', [
+            'registrationForm' => $form->createView(),
+        ]);
+    }
 }

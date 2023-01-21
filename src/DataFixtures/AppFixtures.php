@@ -2,13 +2,14 @@
 
 namespace App\DataFixtures;
 
-use App\Entity\Agencia;
+use App\Entity\User;
 use App\Entity\Conta;
+use App\Entity\Agencia;
 use App\Entity\Gerente;
 use App\Entity\TipoConta;
-use App\Entity\User;
-use Doctrine\Bundle\FixturesBundle\Fixture;
+use App\Entity\Transacao;
 use Doctrine\Persistence\ObjectManager;
+use Doctrine\Bundle\FixturesBundle\Fixture;
 use Symfony\Component\PasswordHasher\Hasher\UserPasswordHasherInterface;
 
 
@@ -20,27 +21,6 @@ class AppFixtures extends Fixture
 
     public function load(ObjectManager $manager): void
     {
-        // $agencia1 = new Agencia();
-        // $agencia1->setNome('Centro');
-        // $agencia1->setTelefone('(87)99988-7766');
-        // $agencia1->setEndereco('Av. principal, 100, Centro, Petrolina/PE');
-        // $agencia1->setCodigo('001');
-        // $manager->persist($agencia1);
-
-        // $agencia2 = new Agencia();
-        // $agencia2->setNome('Integração');
-        // $agencia2->setTelefone('(87)99957-2134');
-        // $agencia2->setEndereco('Rua Cavalcanti, 70, Maria Auxiliadora, Petrolina/PE');
-        // $agencia2->setCodigo('123');
-        // $manager->persist($agencia2);
-
-        // $agencia3 = new Agencia();
-        // $agencia3->setNome('Vila');
-        // // $agencia3->setTelefone('(87)99988-7766'); // Comentado propositalmente
-        // $agencia3->setEndereco('Rua Gomes, 11, Vila, Juazeiro/BA');
-        // $agencia3->setCodigo('321');
-        // $manager->persist($agencia3);
-
         $tipoConta = new TipoConta();
         $tipoConta->setTipo('Corrente');
         $manager->persist($tipoConta);
@@ -65,7 +45,7 @@ class AppFixtures extends Fixture
         
         $manager->flush();
 
-        for ($i = 0; $i < 10; $i++) {        
+        for ($i = 0; $i < 5; $i++) {        
             $gerente = new Gerente();
             $gerente->setNome('Angelo '.$i);
             $gerente->setCpf('123.456.789.1'.$i);
@@ -98,7 +78,7 @@ class AppFixtures extends Fixture
             $user->setPassword($this->hasher->hashPassword($user, '123'));
             $user->setTelefone('8799911070'.$i);
             $user->setRoles(['ROLE_USER']);
-            $userGerente->setIsVerified(true);
+            $user->setIsVerified(true);
             $manager->persist($user);
 
             $conta = new Conta();
@@ -111,5 +91,22 @@ class AppFixtures extends Fixture
 
             $manager->flush();
         }
+        
+        $conta2 = new Conta();
+        $conta2->setNumero('10');
+        $conta2->setSaldo(100);
+        $conta2->setAgencia($agencia);
+        $conta2->setTipo($tipoConta);
+        $conta2->setUser($user);
+        $manager->persist($conta2);
+
+        $transacao = new Transacao();
+        $transacao->setDestinatario($conta);
+        $transacao->setRemetente($conta2);
+        $transacao->setValor(200);
+        $transacao->setDescricao('Transferência');
+        $manager->persist($transacao);
+
+        $manager->flush();
     }
 }

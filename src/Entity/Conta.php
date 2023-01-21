@@ -158,4 +158,27 @@ class Conta
 
         return $this;
     }
+
+    public function debitar(float $valor):self
+    { 
+        $this->saldo = $this->saldo - $valor;
+        
+        return $this;
+    }
+
+    public function creditar(float $valor):self
+    { 
+        $this->saldo = $this->saldo + $valor;
+
+        return $this;
+    }
+
+    public function transferir(float $valor, Conta $destinatario):self
+    { 
+        $this->saldo = $this->saldo - $valor;
+        $destinatario->creditar($valor);
+
+        return $this;
+    }
 }
+

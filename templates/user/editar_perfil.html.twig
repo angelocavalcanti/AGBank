@@ -1,0 +1,19 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}AGBank - Editar Perfil{% endblock %}
+
+{% block body %}
+<div class="">
+
+        <div class="text-teal-700 text-2xl block w-full align-middle py-2">Editar perfil</div><hr>
+        <div class="grid grid-cols-1 sm:grid-cols-2 xl:grid-cols-2 w-2/3 gap-x-6">
+            <div class="mt-5 mb-3 px-2 p-2 rounded-md bg-gray-200 dark:bg-gray-700">
+                <li><strong>Nome: </strong> {{ usuario.nome }}</li>
+                <li><strong>CPF: </strong> {{ usuario.cpf }} </li>
+                <li><strong>Telefone: </strong> {{ usuario.telefone }} </li>
+                <li><strong>Email: </strong> {{ usuario.email }} </li>
+                <button class="block w-full shadow-sm border-transparent bg-indigo-600 hover:bg-indigo-700 dark:bg-indigo-500 dark:hover:bg-indigo-400 text-white rounded-md border p-2 mt-4 mb-2" onClick="window.location.href = '{{ path('app_listar_contas') }}'">Atualizar dados</button>
+            </div>
+        </div>
+</div>
+{% endblock %}

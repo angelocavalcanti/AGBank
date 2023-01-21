@@ -1,0 +1,7 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}AGBank - Debitar{% endblock %}
+
+{% block body %}
+{{ include('conta/_form_valor.html.twig', {acao:'Debitar', form:formDebitar}) }} 
+{% endblock %}

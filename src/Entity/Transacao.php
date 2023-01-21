@@ -22,12 +22,11 @@ class Transacao
     #[ORM\Column]
     private ?int $id = null;
 
-    #[ORM\Column(length: 255, nullable: true)]
-    private ?string $remetente = null;
+    #[ORM\ManyToOne(inversedBy: 'transacoes')]
+    private ?Conta $destinatario = null;
 
     #[ORM\ManyToOne(inversedBy: 'transacoes')]
-    #[ORM\JoinColumn(nullable: false)]
-    private ?Conta $destinatario = null;
+    private ?Conta $remetente = null;
 
     #[ORM\Column(type: Types::DATETIME_MUTABLE)]
     private ?\DateTimeInterface $data = null;
@@ -42,19 +41,7 @@ class Transacao
     {
         return $this->id;
     }
-
-    public function getRemetente(): ?string
-    {
-        return $this->remetente;
-    }
-
-    public function setRemetente(?string $remetente): self
-    {
-        $this->remetente = $remetente;
-
-        return $this;
-    }
-
+    
     public function getDestinatario(): ?Conta
     {
         return $this->destinatario;
@@ -67,6 +54,18 @@ class Transacao
         return $this;
     }
 
+    public function getRemetente(): ?Conta
+    {
+        return $this->remetente;
+    }
+
+    public function setRemetente(?Conta $remetente): self
+    {
+        $this->remetente = $remetente;
+
+        return $this;
+    }
+    
     public function getData(): ?\DateTimeInterface
     {
         return $this->data;
