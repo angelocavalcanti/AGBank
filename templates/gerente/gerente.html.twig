@@ -1,0 +1,20 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}AGBank - Perfil de Gerente{% endblock %}
+
+{% block body %}
+<div class="">
+        <div class="text-teal-700 text-2xl block w-full align-middle py-2">Informações de Gerente</div><hr>
+        <div class="grid grid-cols-1 sm:grid-cols-2 xl:grid-cols-2 w-2/3 gap-x-6">
+            <div class="mt-5 mb-3 px-2 p-2 rounded-md bg-gray-200 dark:bg-gray-700">
+                <li><strong>Nome: </strong> {{ usuario.nome }}</li>
+                <li><strong>CPF: </strong> {{ usuario.cpf }} </li>
+                <li><strong>Telefone: </strong> {{ usuario.telefone }} </li>
+                <li><strong>Email: </strong> {{ usuario.email }} </li>
+                <li><strong>Está verificado: </strong> {% if usuario.isVerified %}Sim{% else %}Não{% endif %} </li>
+                <li><strong>Matrícula: </strong> {{ gerente.matricula }} </li>
+                <button class="block w-full shadow-sm border-transparent bg-indigo-600 hover:bg-indigo-700 dark:bg-indigo-500 dark:hover:bg-indigo-400 text-white rounded-md border p-2 mt-4 mb-2" onClick="window.location.href = '{{ path('app_editar_gerente', { id:gerente.id }) }}'">Editar perfil</button>
+            </div>
+        </div>
+</div>
+{% endblock %}

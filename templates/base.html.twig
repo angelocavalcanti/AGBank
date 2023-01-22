@@ -49,9 +49,13 @@
                         <a href="{{ path('app_depositar_conta') }}">Efetuar Depósito</a>
                     </div> |
                     {% endif %}
-                    {% if is_granted('ROLE_USER') %}
+                    {% if is_granted('ROLE_USER') and not is_granted('ROLE_GERENTE') %}
                     <div class="ml-2 mr-2">
                         <a href="{{ path('app_perfil') }}">Meu Perfil</a>
+                    </div> |
+                    {% elseif is_granted('ROLE_GERENTE') %}
+                    <div class="ml-2 mr-2">
+                        <a href="{{ path('app_gerente') }}">Meu Perfil</a>
                     </div> |
                     {% endif %}
                     {% if is_granted('ROLE_ADMIN') %}

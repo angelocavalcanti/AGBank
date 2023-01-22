@@ -16,13 +16,24 @@ use Symfony\Component\Routing\Annotation\Route;
 
 class GerenteController extends AbstractController
 {
-    #[Route('/gerente', name: 'app_listar_gerentes')]
+    #[Route('/gerentes', name: 'app_listar_gerentes')]
     #[IsGranted('IS_AUTHENTICATED_FULLY')]
     public function listar_gerentes(GerenteRepository $gerentes): Response
     {
-        // $this->denyAccessUnlessGranted('IS_AUTHENTICATED_FULLY'); // Nega acesso se user logado não estiver o papel [IS_AUTHENTICATED_FULLY]
         return $this->render('gerente/listar_gerentes.html.twig', [
             'gerentes' => $gerentes->findAll(),
+        ]);
+    }
+
+    #[Route('/gerente', name: 'app_gerente')]
+    #[IsGranted('IS_AUTHENTICATED_FULLY')]
+    public function gerente(GerenteRepository $gerentes): Response
+    {
+        $user = $this->getUser();
+        $gerente = $gerentes->findOneBy(['user' => $user]);
+        return $this->render('gerente/gerente.html.twig', [
+            'gerente' => $gerente,
+            'usuario' => $user
         ]);
     }
 
