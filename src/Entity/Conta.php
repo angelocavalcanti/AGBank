@@ -34,8 +34,11 @@ class Conta
     #[ORM\JoinColumn(nullable: false)]
     private ?TipoConta $tipo = null;
 
-    #[ORM\OneToMany(mappedBy: 'destinatario', targetEntity: Transacao::class)]
+    #[ORM\OneToMany(mappedBy: 'destinatario', targetEntity: Transacao::class, orphanRemoval: true)]
     private Collection $transacoes;
+
+    #[ORM\OneToMany(mappedBy: 'remetente', targetEntity: Transacao::class, orphanRemoval: true)]
+    private Collection $transacoesr;
 
     #[ORM\ManyToOne(inversedBy: 'conta')]
     #[ORM\JoinColumn(nullable: false)]
@@ -48,7 +51,6 @@ class Conta
     {
         $this->transacoes = new ArrayCollection();
         $this->dataAbertura = new DateTime();
-        $this->aprovada = false;
     }
 
     public function __toString()

@@ -67,7 +67,7 @@ class AgenciaController extends AbstractController
 
      // EXCLUIR AGÊNCIA: 
      #[Route('/agencia{id}/excluir', name: 'app_excluir_agencia')]
-     #[IsGranted('ROLE_GERENTE', 'ROLE_ADMIN')]
+     #[IsGranted('ROLE_ADMIN')]
      public function excluir($id, Agencia $agencia,  AgenciaRepository $agencias): Response
      {
         $agencias->remove($agencia, true);

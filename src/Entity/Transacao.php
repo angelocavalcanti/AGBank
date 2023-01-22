@@ -25,7 +25,7 @@ class Transacao
     #[ORM\ManyToOne(inversedBy: 'transacoes')]
     private ?Conta $destinatario = null;
 
-    #[ORM\ManyToOne(inversedBy: 'transacoes')]
+    #[ORM\ManyToOne(inversedBy: 'transacoesr')]
     private ?Conta $remetente = null;
 
     #[ORM\Column(type: Types::DATETIME_MUTABLE)]

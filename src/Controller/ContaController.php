@@ -41,6 +41,7 @@ class ContaController extends AbstractController
         }
         else if ($formConta->isSubmitted() && $formConta->isValid()) {
             $conta = new Conta();
+            $jaTemConta = $contas->findOneBy(['user' => $this->getUser()]);
             $conta = $formConta->getData();
             $conta->setNumero(rand(1000, 10000));
             while ($contas->findOneBy(['numero'=> $conta->getNumero()])){
@@ -48,11 +49,17 @@ class ContaController extends AbstractController
             }
             $conta->setSaldo(0);
             $conta->setUser($this->getUser());
-            // $conta->setAprovada(false); // Já inicializada no construtor da classe como False
+            if($jaTemConta){
+                $conta->setAprovada(true);
+                $this->addFlash('success', 'Sucesso! Conta criada.');
+            }
+            else{
+                $conta->setAprovada(false);
+                $this->addFlash('success', 'Sucesso! Conta solicitada. Aguarde aprovação.');
+            }
             $contas->save($conta, true);
             $agencia = $conta->getAgencia();
             $tipo = $conta->getTipo();
-            $this->addFlash('success', 'Sucesso! Conta solicitada. Aguarde aprovação.');
             $this->addFlash('success', 'Conta '.$tipo->getTipo().': '.$conta->getNumero().'. Agência: '.$agencia->getCodigo().' ('.$agencia->getNome().')');
             return $this->redirectToRoute('app_listar_contas');
         }
