@@ -13,14 +13,16 @@
             <li><strong>Telefone: </strong> {{ agencia.telefone|default('--') }} </li> 
             <li><strong>Endereço: </strong> {{ agencia.endereco|default('--') }} </li>
         </div>
+        {% if is_granted('ROLE_ADMIN') %}
+            <div>
+                <button class="block w-1/3 shadow-sm border-transparent bg-indigo-600 hover:bg-indigo-700 dark:bg-indigo-500 dark:hover:bg-indigo-400 text-white rounded-md border p-2 mt-4 mb-2" onClick="window.location.href = '{{ path('app_editar_agencia', {id:agencia.id}) }}'">Editar dados da agência</button>
+            </div>
+            <div>
+                <button class="block w-1/3 shadow-sm border-transparent bg-red-600 hover:bg-red-700 dark:bg-indigo-500 dark:hover:bg-indigo-400 text-white rounded-md border p-2 mt-4 mb-2" onClick="window.location.href = '{{ path('app_excluir_agencia', {id:agencia.id }) }}'">Excluir Agência</button>
+            </div>
+        {% endif %}
         <div>
-            <button class="block w-1/3 shadow-sm border-transparent bg-indigo-600 hover:bg-indigo-700 dark:bg-indigo-500 dark:hover:bg-indigo-400 text-white rounded-md border p-2 mt-4 mb-2" onClick="window.location.href = '{{ path('app_editar_agencia', {id:agencia.id}) }}'">Editar dados da agência</button>
-        </div>
-        <div>
-            <button class="block w-1/3 shadow-sm border-transparent bg-red-600 hover:bg-red-700 dark:bg-indigo-500 dark:hover:bg-indigo-400 text-white rounded-md border p-2 mt-4 mb-2" onClick="window.location.href = '{{ path('app_excluir_agencia', {id:agencia.id }) }}'">Excluir Agência</button>
-        </div>
-        <div>
-            <button class="block w-1/3 shadow-sm border-transparent bg-indigo-600 hover:bg-indigo-700 dark:bg-indigo-500 dark:hover:bg-indigo-400 text-white rounded-md border p-2 mt-4 mb-2" onClick="window.location.href = '{{ path('app_criar_conta') }}'">Desejo abrir uma conta nesta agência</button>
+            <button class="block w-1/3 shadow-sm border-transparent bg-indigo-600 hover:bg-indigo-700 dark:bg-indigo-500 dark:hover:bg-indigo-400 text-white rounded-md border p-2 mt-4 mb-2" onClick="window.location.href = '{{ path('app_criar_conta') }}'">Solicitar abertura de conta</button>
         </div>
     {% else %}
         <br>

@@ -4,6 +4,7 @@ namespace App\Controller;
 
 use App\Entity\User;
 use App\Form\RegistrationFormType;
+use App\Repository\UserRepository;
 use App\Security\EmailVerifier;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bridge\Twig\Mime\TemplatedEmail;
@@ -82,12 +83,14 @@ class RegistrationController extends AbstractController
     }
 
     #[Route('/registro{id}/editar', name: 'app_editar_registro')]
-    public function editar_registro(Request $request, UserPasswordHasherInterface $userPasswordHasher, EntityManagerInterface $entityManager): Response
+    public function editar_registro(Request $request, UserPasswordHasherInterface $userPasswordHasher, EntityManagerInterface $entityManager, UserRepository $users): Response
     {
         $user = $this->getUser();
-        $form = $this->createForm(RegistrationFormType::class, $user); // FALTA VERIFICAR ***
+        $user = $users->findOneBy(['id' => $user]);
+        $email = $user->getEmail();
+        $form = $this->createForm(RegistrationFormType::class, $user); 
         $form->handleRequest($request);
-
+    
         if ($form->isSubmitted() && $form->isValid()) {
             // encode the plain password
             $user->setPassword(
@@ -96,25 +99,31 @@ class RegistrationController extends AbstractController
                     $form->get('plainPassword')->getData()
                 )
             );
-            $user->setRoles(['ROLE_USER']);
-            $entityManager->persist($user);
-            $entityManager->flush();
 
-            // generate a signed url and email it to the user
-            $this->emailVerifier->sendEmailConfirmation('app_verify_email', $user,
+            if($email != $form->get('email')->getData()){
+                $user->setIsVerified(false);
+                $this->emailVerifier->sendEmailConfirmation('app_verify_email', $user,
                 (new TemplatedEmail())
                     ->from(new Address('mailer@agbank.com', 'AGBank'))
                     ->to($user->getEmail())
-                    ->subject('Por favor confirme seu Email')
+                    ->subject('Por favor confirme seu novo Email')
                     ->htmlTemplate('registration/confirmation_email.html.twig')
-            );
-            // do anything else you need here, like send an email
-            $this->addFlash('success', 'Sucesso! Registro concluído.');
-            return $this->redirectToRoute('app_login');
+                    
+                );
+                $entityManager->persist($user);
+                $entityManager->flush();
+                $this->addFlash('success', 'Dados atualizados. Confirme seu novo email cadastrado.');
+                return $this->redirectToRoute('app_perfil');
+            }
+            $entityManager->persist($user);
+            $entityManager->flush();
+            $this->addFlash('success', 'Dados atualizados.');
+            return $this->redirectToRoute('app_perfil');
         }
 
-        return $this->render('registration/register.html.twig', [
+        return $this->render('registration/edit_register.html.twig', [
             'registrationForm' => $form->createView(),
+            'user' => $user,
         ]);
     }
 }

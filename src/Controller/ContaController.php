@@ -133,7 +133,7 @@ class ContaController extends AbstractController
         if($this->getUser() ? true : false){
             $roles = $this->getUser()->getRoles();
             if(in_array('ROLE_ADMIN', $roles)){
-                $this->addFlash('error', 'Usuário ADMIN não possui contas.'); // VERIFICAR *** PERMITIR VISUALIZAR TODAS AS CONTAS E AGÊNCIAS
+                $this->addFlash('error', 'Usuário ADMIN não possui contas.');
                 return $this->redirectToRoute('app_login');
             }
             else if(in_array('ROLE_GERENTE', $roles)){
@@ -292,7 +292,7 @@ class ContaController extends AbstractController
                     if($contaRemetente->getSaldo() >= $valor){
                         $transacao = new Transacao();
                         $transacao->setDescricao('Débito'); 
-                        $transacao->setRemetente($contaRemetente);// VERIFICAR *** SE FOI GERENTE
+                        $transacao->setRemetente($contaRemetente);
                         $transacao->setDestinatario($contaRemetente);
                         $transacao->setValor($valor);
                         in_array('ROLE_GERENTE', $roles) ? $transacao->setResponsavel('Gerente') : $transacao->setResponsavel('Cliente');
@@ -318,7 +318,7 @@ class ContaController extends AbstractController
         ]);
     }    
 
-    // EXCLUIR CONTA *** VERIFICAR
+    // EXCLUIR CONTA
     #[Route('/conta{id}/excluir', name: 'app_excluir_conta')]
     #[IsGranted('ROLE_USER')]
     public function excluir($id, Conta $conta, ContaRepository $contas): Response

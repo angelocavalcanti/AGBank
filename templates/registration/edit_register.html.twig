@@ -1,0 +1,57 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}AGBank - Editar Registro{% endblock %}
+
+
+{% block body %}
+    {% for flash_error in app.flashes('verify_email_error') %}
+        <div class="rounded-md p-2 border-red-300 bg-red-50 border dark:border-red-600 dark:bg-red-700 dark:text-white mb-4" role="alert">{{ flash_error }}</div>
+    {% endfor %}
+
+    {{ form_start(registrationForm) }}
+        <div class="w-full items-center align-middle">
+            <div class="text-teal-700 text-2xl block w-full align-middle pt-2">Edite seu Registro</div>
+        </div>
+        <hr class="p-2 mt-2">
+        <div class="w-2/3">
+        <div>
+        <div>
+            {{ form_label(registrationForm.nome, 'Nome', {'label_attr': {'class': 'block text-sm text-gray-700 dark:text-gray-300 font-medium'}}) }}
+            {{ form_widget(registrationForm.nome, {'attr': {'class': 'block w-full shadow-sm border-gray-300 dark:border-transparent dark:text-gray-800 rounded-md border p-2 mt-1 mb-2'}})}}
+            {{ form_errors(registrationForm.nome) }}
+        </div>
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+            <div>
+                {{ form_label(registrationForm.telefone, 'Telefone', {'label_attr': {'class': 'block text-sm text-gray-700 dark:text-gray-300 font-medium'}}) }}
+                {{ form_widget(registrationForm.telefone, {'attr': {'class': 'block w-full shadow-sm border-gray-300 dark:border-transparent dark:text-gray-800 rounded-md border p-2 mt-1 mb-2'}})}}
+                {{ form_errors(registrationForm.telefone) }}
+            </div>
+            <div>
+                {{ form_label(registrationForm.cpf, 'CPF', {'label_attr': {'class': 'block text-sm text-gray-700 dark:text-gray-300 font-medium'}}) }}
+                {{ form_widget(registrationForm.cpf, {'attr': {'class': 'block w-full shadow-sm border-gray-300 dark:border-transparent dark:text-gray-800 rounded-md border p-2 mt-1 mb-2'}})}}
+                {{ form_errors(registrationForm.cpf) }}
+            </div>
+        </div>
+        <div>
+            {{ form_label(registrationForm.email, 'Email (usuário)', {'label_attr': {'class': 'block text-sm text-gray-700 dark:text-gray-300 font-medium'}}) }}
+            {{ form_widget(registrationForm.email, {'attr': {'class': 'block w-full shadow-sm border-gray-300 dark:border-transparent dark:text-gray-800 rounded-md border p-2 mt-1 mb-2'}})}}
+            {{ form_errors(registrationForm.email) }}
+        </div>
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+            <div>
+                {{ form_label(registrationForm.plainPassword.first, 'Senha', {'label_attr': {'class': 'block text-sm text-gray-700 dark:text-gray-300 font-medium'}}) }}
+                {{ form_widget(registrationForm.plainPassword.first, {'attr': {'class': 'block w-full shadow-sm border-gray-300 dark:border-transparent dark:text-gray-800 rounded-md border p-2 mt-1 mb-2'}})}}
+                {{ form_errors(registrationForm.plainPassword.first) }}
+            </div>
+            <div>
+                {{ form_label(registrationForm.plainPassword.second, 'Repita sua senha', {'label_attr': {'class': 'block text-sm text-gray-700 dark:text-gray-300 font-medium'}}) }}
+                {{ form_widget(registrationForm.plainPassword.second, {'attr': {'class': 'block w-full shadow-sm border-gray-300 dark:border-transparent dark:text-gray-800 rounded-md border p-2 mt-1 mb-2'}})}}
+                {{ form_errors(registrationForm.plainPassword.second) }}
+            </div>
+        </div>
+        <div class="border-b border-gray-300"></div>
+        <div>
+            <button type="submit" class="block w-full shadow-sm border-transparent bg-indigo-600 hover:bg-indigo-700 dark:bg-indigo-500 dark:hover:bg-indigo-400 text-white rounded-md border p-2 mt-4 mb-2">Atualizar dados</button>
+        </div>
+    {{ form_end(registrationForm) }}
+{% endblock %}
