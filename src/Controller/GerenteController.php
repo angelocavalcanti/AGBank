@@ -5,6 +5,7 @@ namespace App\Controller;
 use App\Entity\Gerente;
 use App\Entity\User;
 use App\Form\GerenteType;
+use App\Repository\ContaRepository;
 use App\Repository\GerenteRepository;
 use App\Repository\UserRepository;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\IsGranted;
@@ -47,4 +48,31 @@ class GerenteController extends AbstractController
             'id' => $id 
         ]);
     }
+
+    #[Route('/liberar{id}', name: 'app_liberar_conta')]
+    #[IsGranted('ROLE_GERENTE')]
+    public function liberar_conta($id, ContaRepository $contas, GerenteRepository $gerentes): Response
+    {
+        $gerente = $gerentes->findOneBy(['user' => $this->getUser()]);
+        $conta = $contas->findOneBy(['id' => $id]);
+        if($conta){
+            if($conta->getAgencia() == $gerente->getAgencia()){
+                $conta->setAprovada(true);
+                $contas->save($conta, true);
+                $this->addFlash('success', 'Conta ' . $conta . ' aprovada.');
+                return $this->render('conta/listar_contas.html.twig', [
+                    'contas' => $contas->findBy(['agencia' => $gerente->getAgencia()], ['aprovada' => 'ASC']),
+                    'ehGerente' => true,
+                ]);
+            }
+            else{
+                $this->addFlash('error', 'Sem permissão. Conta pertence à outra agência.');    
+            }
+        }
+        else{
+            $this->addFlash('error', 'Conta não encontrada.');
+        }
+        return $this->redirectToRoute('app_listar_agencias');
+    }
+
 }

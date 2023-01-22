@@ -5,36 +5,48 @@
 {% block body %}
 <div class="">
     {% if contas %}
-        <div class="text-teal-700 text-2xl block w-full align-middle py-2">Informações de Conta:</div><hr>
+        <div class="text-teal-700 text-2xl block w-full align-middle py-2">Informações de Conta</div><hr>
         <div class="grid grid-cols-1 sm:grid-cols-2 xl:grid-cols-2 w-3/4 gap-x-6">
-        {% for key, conta in contas %}
+        {% for conta in contas %}
             <div class="mt-5 mb-3 px-3 pt-3 rounded-md bg-gray-200 dark:bg-gray-700">
+                {% if ehGerente and not conta.aprovada %}
+                    <div class="w-full">
+                        <button class="float-right static block inline shadow-sm border-transparent bg-teal-500 hover:bg-teal-600 dark:bg-teal-500 dark:hover:bg-teal-400 text-white rounded-md border p-1 mt-2 mb-2" onClick="window.location.href = '{{ path('app_liberar_conta', {id:conta.id }) }}'">Aprovar Conta</button>
+                    </div>
+                {% endif %}
                 <li><strong>Agência: </strong> {{ conta.agencia.codigo }} ({{ conta.agencia|default('--') }})</li>
                 <li><strong>Número da Conta: </strong> {{ conta.numero|default('--') }} </li>
                 <li><strong>Tipo: </strong> {{ conta.tipo.tipo|default('--') }} </li>
                 <li><strong>Data de abertura: </strong> {{ conta.dataAbertura|date("d/m/Y") }} </li>
                 <li><strong>Aprovada: </strong> 
                 {% if conta.aprovada %} 
-                Sim 
+                    Sim 
                 {% else %}
-                Não
+                    Não 
                 {% endif %}
                 </li>
-                {% if conta.saldo > 0 %}
-                <li><strong>Saldo: </strong><tag class="text-blue-700">R$ {{ conta.saldo|number_format(2, ',', '.') }} </tag></li>
+                <li><strong>Saldo: </strong><tag 
+                {% if conta.saldo > 0 %} 
+                    class="text-blue-700" 
                 {% else %}
-                <li><strong>Saldo: </strong><tag class="text-red-700">R$ {{ conta.saldo|number_format(2, ',', '.') }} 
-                </tag></li>
+                    class="text-red-700" 
                 {% endif %}
+                >R$ {{ conta.saldo|number_format(2, ',', '.') }} </tag></li>               
+                {% if ehGerente %}
+                    <div class="pt-2 pb-1 font-bold">Informações do Cliente</div>
+                    <li><strong>Nome: </strong> {{ conta.user.nome|default('--') }}</li>
+                    <li><strong>Email: </strong> {{ conta.user.email }} </li>
+                    <li><strong>Telefone: </strong> {{ conta.user.telefone|default('--') }} </li>
+                    <li><strong>CPF: </strong> {{ conta.user.cpf|default('--') }} </li>
+                {% endif %}                
                 <div class="grid grid-cols-1 sm:grid-cols-2 xl:grid-cols-3 w-full gap-x-3 p-2 pb-0">
-                    <button {% if not conta.aprovada %} disabled title="Não permitido. Conta não aprovada" class="inline block shadow-sm border-transparent bg-gray-500 hover:bg-gray-600 dark:bg-gray-500 dark:hover:bg-gray-400 text-white rounded-md border p-1 mt-4 mb-2" {% else %} class="inline block shadow-sm border-transparent bg-indigo-500 hover:bg-indigo-600 dark:bg-indigo-500 dark:hover:bg-indigo-400 text-white rounded-md border p-1 mt-4 mb-2" onClick="window.location.href = '{{ path('app_transferir_conta', {id:conta.id }) }}'"{% endif %}>Transferir</button>
-                    <button  {% if not conta.aprovada %} disabled title="Não permitido. Conta não aprovada" class="inline block shadow-sm border-transparent bg-gray-500 hover:bg-gray-600 dark:bg-gray-500 dark:hover:bg-gray-400 text-white rounded-md border p-1 mt-4 mb-2" {% else %} class="inline block shadow-sm border-transparent bg-indigo-500 hover:bg-indigo-600 dark:bg-indigo-500 dark:hover:bg-indigo-400 text-white rounded-md border p-1 mt-4 mb-2" onClick="window.location.href = '{{ path('app_debitar_conta', {id:conta.id }) }}'"{% endif %}>Debitar</button>
+                    <button {% if not conta.aprovada or conta.saldo == 0 %} disabled title="Não permitido. Conta não aprovada ou saldo zerado" class="inline block shadow-sm border-transparent bg-gray-500 hover:bg-gray-600 dark:bg-gray-500 dark:hover:bg-gray-400 text-white rounded-md border p-1 mt-4 mb-2" {% else %} class="inline block shadow-sm border-transparent bg-indigo-500 hover:bg-indigo-600 dark:bg-indigo-500 dark:hover:bg-indigo-400 text-white rounded-md border p-1 mt-4 mb-2" onClick="window.location.href = '{{ path('app_transferir_conta', {id:conta.id }) }}'"{% endif %}>Transferir</button>
+                    <button  {% if not conta.aprovada or conta.saldo == 0  %} disabled title="Não permitido. Conta não aprovada ou saldo zerado" class="inline block shadow-sm border-transparent bg-gray-500 hover:bg-gray-600 dark:bg-gray-500 dark:hover:bg-gray-400 text-white rounded-md border p-1 mt-4 mb-2" {% else %} class="inline block shadow-sm border-transparent bg-indigo-500 hover:bg-indigo-600 dark:bg-indigo-500 dark:hover:bg-indigo-400 text-white rounded-md border p-1 mt-4 mb-2" onClick="window.location.href = '{{ path('app_debitar_conta', {id:conta.id }) }}'"{% endif %}>Debitar</button>
                     <button  {% if not conta.aprovada %} disabled title="Não permitido. Conta não aprovada" class="inline block shadow-sm border-transparent bg-gray-500 hover:bg-gray-600 dark:bg-gray-500 dark:hover:bg-gray-400 text-white rounded-md border p-1 mt-4 mb-2" {% else %} class="inline block shadow-sm border-transparent bg-indigo-500 hover:bg-indigo-600 dark:bg-indigo-500 dark:hover:bg-indigo-400 text-white rounded-md border p-1 mt-4 mb-2" onClick="window.location.href = '{{ path('app_creditar_conta', {id:conta.id }) }}'"{% endif %}>Creditar</button>
                 </div>
-                <div class="grid grid-cols-1 sm:grid-cols-1 xl:grid-cols-1 w-full gap-x-3 pt-1 p-2 pb-0">
-                      {# FALTA IMPLEMENTAR A SOLICITAÇÃO DE EXCLUSÃO DE CONTA AO GERENTE DA AGENCIA. VERIFICAR *** #}
-                      <button {% if not conta.aprovada %} disabled title="Não permitido. Conta não aprovada"  class="block w-full shadow-sm border-transparent bg-gray-500 hover:bg-gray-600 dark:bg-gray-500 dark:hover:bg-gray-400 text-white rounded-md border p-1 mt-4 mb-2" {% else %} class="block w-full shadow-sm border-transparent bg-indigo-500 hover:bg-indigo-600 dark:bg-indigo-500 dark:hover:bg-indigo-400 text-white rounded-md border p-1 mt-4 mb-2" onClick="window.location.href = '{{ path('app_listar_contas', {id:conta.id }) }}'"{% endif %}>Ver histórico de transações</button>
-                      <button class="block w-full shadow-sm border-transparent bg-red-500 hover:bg-red-600 dark:bg-indigo-500 dark:hover:bg-indigo-400 text-white rounded-md border p-1 mt-4 mb-2" onClick="window.location.href = '{{ path('app_excluir_conta', {id:conta.id }) }}'">Solicitar Encerramento de Conta</button>
+                <div class="grid grid-cols-1 sm:grid-cols-1 xl:grid-cols-1 w-full gap-x-3 pt-1 p-2 pb-1">
+                      <button {% if not conta.aprovada %} disabled title="Não permitido. Conta não aprovada"  class="block w-full shadow-sm border-transparent bg-gray-500 hover:bg-gray-600 dark:bg-gray-500 dark:hover:bg-gray-400 text-white rounded-md border p-1 mt-4 mb-2" {% else %} class="block w-full shadow-sm border-transparent bg-indigo-500 hover:bg-indigo-600 dark:bg-indigo-500 dark:hover:bg-indigo-400 text-white rounded-md border p-1 mt-4 mb-2" onClick="window.location.href = '{{ path('app_transacoes', {id:conta.id }) }}'"{% endif %}>Ver histórico de transações</button>
+                      <button class="block w-full shadow-sm border-transparent bg-red-500 hover:bg-red-600 dark:bg-indigo-500 dark:hover:bg-indigo-400 text-white rounded-md border p-1 mt-4 mb-2" onClick="window.location.href = '{{ path('app_excluir_conta', {id:conta.id }) }}'">Encerrar Conta</button>
                 </div>
             </div>
         {% endfor %}
@@ -50,7 +62,7 @@
                     <a class="text-teal-600" href= "{{ path('app_criar_conta') }}">clicando aqui</a>
                 </div>
             {% endif %}  
-            </div>
+        </div>
     {% endif %}
 </div>
 {% endblock %}

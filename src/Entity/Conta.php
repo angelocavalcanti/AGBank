@@ -48,6 +48,7 @@ class Conta
     {
         $this->transacoes = new ArrayCollection();
         $this->dataAbertura = new DateTime();
+        $this->aprovada = false;
     }
 
     public function __toString()

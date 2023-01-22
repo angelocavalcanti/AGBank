@@ -1,0 +1,25 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}AGBank - Transações{% endblock %}
+
+{% block body %}
+<div class="">
+{% if transacoes %}
+    <div class="text-teal-700 text-2xl block w-full align-middle py-2">Extrato de Transações</div><hr>
+    <div class="grid grid-cols-1 sm:grid-cols-1 xl:grid-cols-1 w-full">    
+        {% for transacao in transacoes %}
+        <div class="mt-1 w-full mb-3 px-3 pt-1 rounded-md bg-gray-200 dark:bg-gray-700">
+            {{ transacao.data|date("d/m/Y") }} - {{ transacao.descricao }} de {{ transacao.valor|number_format(2, ',', '.') }} pelo {{ transacao.responsavel }} da conta {{ transacao.remetente }} para a conta {{ transacao.destinatario }} 
+        </div>
+        {% endfor %}
+    </div>
+{% else %}
+     <div class="p-2 pt-5">
+        <div>Não há transações para serem exibidas!</div>
+        <div>Retorne à página de contas 
+            <a class="text-teal-600" href= "{{ path('app_listar_contas') }}">clicando aqui</a>
+        </div>
+    </div>
+{% endif %}
+</div>
+{% endblock %}
