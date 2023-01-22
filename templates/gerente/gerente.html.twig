@@ -12,8 +12,12 @@
                 <li><strong>Telefone: </strong> {{ usuario.telefone }} </li>
                 <li><strong>Email: </strong> {{ usuario.email }} </li>
                 <li><strong>Está verificado: </strong> {% if usuario.isVerified %}Sim{% else %}Não{% endif %} </li>
-                <li><strong>Matrícula: </strong> {{ gerente.matricula }} </li>
-                <button class="block w-full shadow-sm border-transparent bg-indigo-600 hover:bg-indigo-700 dark:bg-indigo-500 dark:hover:bg-indigo-400 text-white rounded-md border p-2 mt-4 mb-2" onClick="window.location.href = '{{ path('app_editar_gerente', { id:gerente.id }) }}'">Editar perfil</button>
+                {% if not is_granted('ROLE_ADMIN') %}
+                    <li><strong>Matrícula: </strong> {{ gerente.matricula }} </li>
+                    <button class="block w-full shadow-sm border-transparent bg-indigo-600 hover:bg-indigo-700 dark:bg-indigo-500 dark:hover:bg-indigo-400 text-white rounded-md border p-2 mt-4 mb-2" onClick="window.location.href = '{{ path('app_editar_gerente', { id:gerente.id }) }}'">Editar perfil</button>
+                {% else %}
+                    <button class="block w-full shadow-sm border-transparent bg-indigo-600 hover:bg-indigo-700 dark:bg-indigo-500 dark:hover:bg-indigo-400 text-white rounded-md border p-2 mt-4 mb-2" onClick="window.location.href = '{{ path('app_editar_registro', { id:usuario.id }) }}'">Editar perfil</button>
+                {% endif %}
             </div>
         </div>
 </div>

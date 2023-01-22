@@ -47,7 +47,8 @@ class AgenciaController extends AbstractController
    
     // EDITAR DADOS DE AGÊNCIA: 
     #[Route('/agencia{id}/editar', name: 'app_editar_agencia')]
-    #[IsGranted('ROLE_GERENTE', 'ROLE_ADMIN')]
+    #[IsGranted('ROLE_GERENTE')]
+    #[IsGranted('ROLE_ADMIN')]
     public function editar($id, Agencia $agencia, Request $request, AgenciaRepository $agencias): Response
     {
         $formAgencia = $this->createForm(AgenciaType::class, $agencia);
@@ -84,12 +85,14 @@ class AgenciaController extends AbstractController
     #[Route('/agencia/criar', name: 'app_criar_agencia', priority:1)]
     #[IsGranted('ROLE_ADMIN')]
     public function criar(AgenciaRepository $agencias, GerenteRepository $gerentes, UserRepository $users, Request $request, UserPasswordHasherInterface $userPasswordHasher): Response
-    {
-        $roles = $this->getUser()->getRoles();
-        if(!array_search('ROLE_ADMIN', $roles)){
-            $this->addFlash('error', 'Erro! Sem permissão de acesso a esta página!');
-            return $this->redirectToRoute('app_login');
-        }
+    {        
+        if($this->getUser() ? true : false){
+            $roles = $this->getUser()->getRoles();
+            if(!in_array('ROLE_ADMIN', $roles)){
+                $this->addFlash('error', 'Erro! Sem permissão de acesso a esta página.');
+                return $this->redirectToRoute('app_login');
+            }
+        }      
         $formAgencia = $this->createForm(AgenciaType::class, new Agencia());
         $formGerente = $this->createForm(GerenteType::class, new Gerente());
         $formUser = $this->createForm(RegistrationFormType::class, new User());

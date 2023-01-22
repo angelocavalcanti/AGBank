@@ -51,7 +51,7 @@ class GerenteController extends AbstractController
             $users->save($userGerente, true);
             $gerentes->save($gerente, true);
             $this->addFlash('success', 'Os dados do Gerente foram atualizados!');
-            return $this->redirectToRoute('app_listar_gerentes');
+            return $this->redirectToRoute('app_listar_agencias');
         }
         return $this->renderForm('gerente/editar_gerente.html.twig',[
             'formGerente' => $formGerente, 

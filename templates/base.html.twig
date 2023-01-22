@@ -59,19 +59,22 @@
                     </div> |
                     {% endif %}
                     {% if is_granted('ROLE_ADMIN') %}
-                    <div class="ml-2 mr-2">
-                        <a href="{{ path('app_listar_gerentes') }}">Ver gerentes</a>
-                    </div> |
-                    {% endif %}
-                    {% if not is_granted('ROLE_ADMIN') %}
-                    <div class="ml-2 mr-2">
-                        <a href="{{ path('app_criar_conta') }}">Abrir Conta</a>
-                    </div> |
-                    {% if app.user %}
                         <div class="ml-2 mr-2">
-                            <a href="{{ path('app_listar_contas') }}">Minhas Contas</a>
+                            <a href="{{ path('app_listar_gerentes') }}">Ver gerentes</a>
                         </div> |
                     {% endif %}
+                    {% if not is_granted('ROLE_ADMIN') %}
+                        {% if not is_granted('ROLE_GERENTE') %}
+                            <div class="ml-2 mr-2">
+                                <a href="{{ path('app_criar_conta') }}">Abrir Conta</a>
+                            </div> |
+                        {% endif %}
+                        {% if app.user %}
+                            <div class="ml-2 mr-2">
+                                <a href="{{ path('app_listar_contas') }}">
+                                {% if is_granted('ROLE_ADMIN') %}Informações de Contas{% elseif is_granted('ROLE_GERENTE') %}Contas da Agência{% elseif is_granted('ROLE_USER') %}Minhas Contas{% endif %}</a>
+                            </div> |
+                        {% endif %}
                     {% endif %}
                 </div>
             </div>
