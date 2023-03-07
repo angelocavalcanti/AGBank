@@ -17,15 +17,15 @@ symfony console doctrine:fixtures:load
 ```
 
 ##### Para fazer login na aplicação como
-**Administrador:**
+######  Administrador:
 admin@admin.com
 123
 
-**Usuário:**
+###### Usuário:
 usuario1@agbank.com
 123
 
-**Gerente:**
+##### Gerente:
 gerente1@agbank.com
 123
 
