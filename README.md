@@ -18,16 +18,16 @@ symfony console doctrine:fixtures:load
 
 ##### Para fazer login na aplicação como
 ######  Administrador:
-admin@admin.com
-123
+> admin@admin.com
+> 123
 
 ###### Usuário:
-usuario1@agbank.com
-123
+> usuario1@agbank.com
+> 123
 
 ##### Gerente:
-gerente1@agbank.com
-123
+> gerente1@agbank.com
+> 123
 
 
 ##### Comando extra para limpar o cache do navegador:
